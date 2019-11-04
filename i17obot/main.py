@@ -8,8 +8,8 @@ from aiogram.types import inline_keyboard
 from aiogram.utils import exceptions, executor
 from decouple import config
 
+import handlers
 import messages
-from handlers import translate
 from telegram import bot
 from transifex import random_string, transifex_api
 
@@ -20,8 +20,9 @@ logger = logging.getLogger("broadcast")
 if __name__ == "__main__":
     dp = Dispatcher(bot, loop=asyncio.get_event_loop())
 
+    dp.register_message_handler(handlers.start, commands=["start", "help", "ajuda"])
     dp.register_message_handler(
-        translate.translate_at_transifex, commands=["translate", "traduzir"]
+        handlers.translate_at_transifex, commands=["translate", "traduzir"]
     )
 
     executor.start_polling(dp, skip_updates=True)

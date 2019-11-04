@@ -6,6 +6,15 @@ from telegram import bot
 from transifex import random_string, transifex_string_url
 
 
+async def start(message: types.Message):
+    await bot.send_message(
+        message.chat.id,
+        messages.start.format(name=message.from_user.first_name),
+        disable_web_page_preview=True,
+        parse_mode="markdown",
+    )
+
+
 async def translate_at_transifex(message: types.Message):
     resource, string = await random_string(max_size=300)
     string_url = transifex_string_url(resource, string["key"])
