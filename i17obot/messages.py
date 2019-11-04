@@ -1,4 +1,4 @@
-start = """🐍💱🇧🇷 @i17obot
+start = """🐍💱 @i17obot
 Olá, *{name}*!
 Este robô pode te ajudar a traduzir a Documentação do Python para português!!
 
