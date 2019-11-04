@@ -16,6 +16,7 @@ transitions = "*"
 Jinja2 = "*"
 async-lru = "*"
 motor = "*"
+pymongo = {extras = ["srv"],version = "*"}
 
 [requires]
 python_version = "3.8"
