@@ -15,6 +15,7 @@ requests = "*"
 transitions = "*"
 Jinja2 = "*"
 async-lru = "*"
+motor = "*"
 
 [requires]
 python_version = "3.8"

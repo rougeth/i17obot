@@ -4,6 +4,7 @@ from aiogram.utils.markdown import quote_html
 import messages
 from telegram import bot
 from transifex import random_string, transifex_string_url
+from database import create_user, toggle_reminder
 
 
 async def start(message: types.Message):
@@ -13,6 +14,18 @@ async def start(message: types.Message):
         disable_web_page_preview=True,
         parse_mode="markdown",
     )
+
+
+async def reminder(message: types.Message):
+    reminder_set = await toggle_reminder(message.from_user.id)
+    if reminder_set:
+        await bot.send_message(
+            message.chat.id, messages.reminder_on, parse_mode="markdown",
+        )
+    else:
+        await bot.send_message(
+            message.chat.id, messages.reminder_off, parse_mode="markdown",
+        )
 
 
 async def translate_at_transifex(message: types.Message):

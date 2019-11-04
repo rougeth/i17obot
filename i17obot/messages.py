@@ -31,5 +31,14 @@ translate_at_transifex = """
 *Link para tradução:*
 [{transifex_url:.90}...]({transifex_url})
 
-Para escolher outro trecho, use o comando /traduzir.
+Se você quiser escolher outro trecho, use o comando /traduzir.
+"""
+
+reminder_on = """*Lembrete configurado* 🎉🥳
+Você deverá receber um trecho para ser traduzido por dia.
+Se você quiser, use o comando /traduzir para receber outro trecho a qualquer momento.
+"""
+
+reminder_off = """*Lembrete removido* 😢
+Mas você pode continuar traduzindo usando o comando /traduzir.
 """
