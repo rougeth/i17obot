@@ -1,14 +1,10 @@
-review = """
-*Texto Original*:
+translate_at_transifex = """
+*Texto original*:
 ```
-{original_text}
+{source}
 ```
+*Link para tradução:*
+[{transifex_url:.90}...]({transifex_url})
 
-*Tradução*:
-```
-{translation}
-```
-
-*Dica*: Atenção às letras maísculas, minúsculas e pontuações,
-elas podem mudar o sentido dos textos.
+Para escolher outro trecho, use o comando /traduzir.
 """
