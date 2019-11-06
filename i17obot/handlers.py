@@ -17,6 +17,8 @@ async def start(message: types.Message):
 
 
 async def reminder(message: types.Message):
+    if not types.ChatType.is_private(message.chat):
+        return
     reminder_set = await toggle_reminder(message.from_user.id)
     if reminder_set:
         await bot.send_message(
