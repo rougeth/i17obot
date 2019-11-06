@@ -21,6 +21,8 @@ async def reminder(user_id):
 
 
 async def reminder_all_users():
+
+    print("Running reminder_all_users task")
     users = await get_users_with_reminder_on()
     tasks = [reminder(user["id"]) for user in users]
     print("Users with reminter set on:", len(tasks))
@@ -28,6 +30,7 @@ async def reminder_all_users():
 
 
 if __name__ == "__main__":
+    print("Starting reminder script")
     loop = asyncio.get_event_loop()
     loop.run_until_complete(reminder_all_users())
 
