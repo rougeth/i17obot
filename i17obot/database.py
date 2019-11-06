@@ -18,3 +18,7 @@ async def toggle_reminder(id):
     reminder = user.get("reminder_set", False)
     await db.users.update_one({"id": id}, {"$set": {"reminder_set": not reminder}})
     return not reminder
+
+
+async def get_users_with_reminder_on():
+    return [user async for user in db.users.find({"reminder_set": True})]
