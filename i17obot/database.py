@@ -9,7 +9,11 @@ async def create_user(telegram_user):
     user = await db.users.find_one({"id": telegram_user.id})
     if not user:
         user = await db.users.insert_one(
-            {"id": telegram_user.id, "telegram_data": dict(telegram_user),}
+            {
+                "id": telegram_user.id,
+                "reminder_set": True,
+                "telegram_data": dict(telegram_user),
+            }
         )
 
 

@@ -1,6 +1,6 @@
 start = """🐍💱 @i17obot
 Olá, *{name}*!
-Este robô pode te ajudar a traduzir a Documentação do Python para português!!
+Este robô pode te ajudar a traduzir a documentação do Python para português!!
 
 🕹 *Instruções*
 /traduzir - envia um trecho com link para traduzir no Transifex
@@ -37,6 +37,7 @@ translate_at_transifex = """
 reminder_on = """*Lembrete configurado* 🎉🥳
 Você deverá receber um trecho para ser traduzido por dia.
 Se você quiser, use o comando /traduzir para receber outro trecho a qualquer momento.
+Para desativar, use o comando /lembrete.
 """
 
 reminder_off = """*Lembrete removido* 😢
