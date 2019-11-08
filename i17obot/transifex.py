@@ -48,7 +48,7 @@ async def random_string(resource=None, translated=None, reviewed=None, max_size=
 
 
 def transifex_string_url(resource, key):
-    query_string = f"text:'{key[:50]}'"
+    query_string = f"text:'{key[:20]}'"
     return (
         "https://www.transifex.com/"
         f"python-doc/python-newest/translate/#pt_BR/{resource}/1"

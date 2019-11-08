@@ -29,7 +29,7 @@ translate_at_transifex = """
 {source}
 ```
 🔗 *Link para tradução:*
-[{transifex_url:.90}...]({transifex_url})
+[{transifex_url}]({transifex_url})...
 
 /traduzir para receber outro trecho
 """
