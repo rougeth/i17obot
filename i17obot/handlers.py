@@ -31,7 +31,7 @@ async def reminder(message: types.Message):
 
 
 async def translate_at_transifex(message: types.Message):
-    resource, string = await random_string(max_size=300)
+    resource, string = await random_string(translated=False, max_size=300)
     string_url = transifex_string_url(resource, string["key"])
 
     response = messages.translate_at_transifex.format(
