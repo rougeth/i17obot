@@ -24,7 +24,7 @@ class CreateUserMiddleware(BaseMiddleware):
 
     async def on_pre_process_message(self, message: types.Message, *args):
         if message.from_user.id not in self.cached_user_ids:
-            await create_user(message.from_user)
+            await create_user(message.from_user, chat_type=message.chat.type)
             self.cached_user_ids.append(message.from_user.id)
 
 

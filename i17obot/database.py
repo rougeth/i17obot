@@ -5,7 +5,7 @@ client = motor.motor_asyncio.AsyncIOMotorClient(config("DATABASE"))
 db = client.i17obot
 
 
-async def create_user(telegram_user):
+async def create_user(telegram_user, chat_type):
     user = await db.users.find_one({"id": telegram_user.id})
     if not user:
         user = await db.users.insert_one(
@@ -13,6 +13,7 @@ async def create_user(telegram_user):
                 "id": telegram_user.id,
                 "reminder_set": True,
                 "telegram_data": dict(telegram_user),
+                "chat_type": chat_type,
             }
         )
 
@@ -25,4 +26,7 @@ async def toggle_reminder(id):
 
 
 async def get_users_with_reminder_on():
-    return [user async for user in db.users.find({"reminder_set": True})]
+    return [user async for user in db.users.find({
+        "reminder_set": True,
+        "chat_type": "private",
+    })]

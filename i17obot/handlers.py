@@ -4,7 +4,7 @@ from aiogram.utils.markdown import quote_html
 import messages
 from telegram import bot
 from transifex import random_string, transifex_string_url
-from database import create_user, toggle_reminder
+from database import toggle_reminder
 
 
 async def start(message: types.Message):
