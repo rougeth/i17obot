@@ -49,7 +49,9 @@ async def random_string(resource=None, translated=None, reviewed=None, max_size=
         if max_size:
             max_size += 300
 
-        return await random_string(resource, translated, reviewed, max_size)
+        return await random_string(
+            translated=translated, reviewed=reviewed, max_size=max_size
+        )
 
     return resource, random.choice(list(strings))
 
