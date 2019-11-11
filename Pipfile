@@ -6,6 +6,8 @@ verify_ssl = true
 [dev-packages]
 black = "*"
 isort = "*"
+ipython = "*"
+ipdb = "*"
 
 [packages]
 aiogram = "*"
