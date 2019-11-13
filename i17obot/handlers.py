@@ -1,10 +1,13 @@
 from aiogram import types
 from aiogram.utils.markdown import quote_html
+from decouple import Csv, config
 
 import messages
 from telegram import bot
 from transifex import random_string, transifex_string_url
-from database import toggle_reminder
+from database import get_all_users, toggle_reminder
+
+ADMINS = config("ADMINS", cast=Csv(int))
 
 
 async def start(message: types.Message):
@@ -41,4 +44,20 @@ async def translate_at_transifex(message: types.Message):
 
     await bot.send_message(
         message.chat.id, response, disable_web_page_preview=True, parse_mode="markdown",
+    )
+
+
+async def status(message: types.Message):
+    if message.from_user.id not in ADMINS:
+        return
+
+    users = await get_all_users()
+
+    await bot.send_message(
+        message.chat.id,
+        messages.status.format(
+            users=len(users),
+            reminders=len([user for user in users if user.get("reminder_set")]),
+        ),
+        parse_mode="markdown",
     )

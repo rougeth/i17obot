@@ -37,5 +37,6 @@ if __name__ == "__main__":
         handlers.translate_at_transifex, commands=["translate", "traduzir"]
     )
     dp.register_message_handler(handlers.reminder, commands=["reminder", "lembrete"])
+    dp.register_message_handler(handlers.status, commands=["status"])
 
     executor.start_polling(dp, skip_updates=True)

@@ -30,3 +30,7 @@ async def get_users_with_reminder_on():
         user
         async for user in db.users.find({"reminder_set": True, "chat_type": "private"})
     ]
+
+
+async def get_all_users():
+    return [user async for user in db.users.find()]

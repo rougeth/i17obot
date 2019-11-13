@@ -43,3 +43,8 @@ Para desativar, use o comando /lembrete.
 reminder_off = """*Lembrete removido* 😢
 Mas você pode continuar traduzindo usando o comando /traduzir.
 """
+
+status = """📈 *Status*
+- Total users: {users}
+- Total reminders configured: {reminders}
+"""
