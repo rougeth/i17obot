@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 async def reminder(user_id):
-    print("Reminder sent to:", user_id)
+    print("Reminding user:", user_id)
     await bot.send_message(user_id, "⏰ *Lembrete!*", parse_mode="markdown")
 
     # Mock is needed because the handler `translate_at_transifex`
@@ -18,6 +18,7 @@ async def reminder(user_id):
     mock = Mock()
     mock.chat.id = user_id
     await handlers.translate_at_transifex(mock)
+    print("Reminder sent to:", user_id)
 
 
 async def reminder_all_users():
