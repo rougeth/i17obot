@@ -1,11 +1,12 @@
 from aiogram import types
-from aiogram.utils.markdown import quote_html
+from aiogram.utils.markdown import escape_md, quote_html
 from decouple import Csv, config
 
 import messages
 from telegram import bot
 from transifex import random_string, transifex_string_url
 from database import get_all_users, toggle_reminder
+from utils import docsurl
 
 ADMINS = config("ADMINS", cast=Csv(int))
 
@@ -37,9 +38,15 @@ async def translate_at_transifex(message: types.Message):
     resource, string = await random_string(translated=False, max_size=300)
     string_url = transifex_string_url(resource, string["key"])
 
+    docspath = escape_md("/".join(resource.split("--")))
+    docsurl = f"https://docs.python.org/{docspath}.html"
+
     response = messages.translate_at_transifex.format(
-        source=string["source_string"], transifex_url=string_url
+        source=string["source_string"],
+        transifex_url=string_url,
+        docsurl=docsurl,
     )
+
     response = quote_html(response)
 
     await bot.send_message(

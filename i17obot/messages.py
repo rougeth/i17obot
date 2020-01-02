@@ -28,8 +28,11 @@ translate_at_transifex = """
 ```
 {source}
 ```
-🔗 *Link para tradução:*
+🔗 *Link para tradução*:
 [{transifex_url}]({transifex_url})...
+
+📚 *Referência e contexto*:
+{docsurl}
 
 /traduzir para receber outro trecho
 """
