@@ -2,16 +2,22 @@ import asyncio
 import logging
 from unittest.mock import Mock
 
+from aiogram.utils.exceptions import BotBlocked
+
 import handlers
 from telegram import bot
 from database import get_users_with_reminder_on
 
 logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 
 async def reminder(user_id):
     print("Reminding user:", user_id)
-    await bot.send_message(user_id, "⏰ *Lembrete!*", parse_mode="markdown")
+    try:
+        await bot.send_message(user_id, "⏰ *Lembrete!*", parse_mode="markdown")
+    except BotBlocked:
+        logger.exception("i17obot blocked by user. userid=%r", message.chat.id)
 
     # Mock is needed because the handler `translate_at_transifex`
     # expects a Message object that contains chat.id attribuites.

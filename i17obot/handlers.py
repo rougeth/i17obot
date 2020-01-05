@@ -1,4 +1,7 @@
+import logging
+
 from aiogram import types
+from aiogram.utils.exceptions import BotBlocked
 from aiogram.utils.markdown import escape_md, quote_html
 from decouple import Csv, config
 
@@ -9,6 +12,9 @@ from database import get_all_users, toggle_reminder
 from utils import docsurl
 
 ADMINS = config("ADMINS", cast=Csv(int))
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 async def start(message: types.Message):
@@ -48,10 +54,12 @@ async def translate_at_transifex(message: types.Message):
     )
 
     response = quote_html(response)
-
-    await bot.send_message(
-        message.chat.id, response, disable_web_page_preview=True, parse_mode="markdown",
-    )
+    try:
+        await bot.send_message(
+            message.chat.id, response, disable_web_page_preview=True, parse_mode="markdown",
+        )
+    except BotBlocked:
+        logger.exception("i17obot blocked by user. userid=%r", message.chat.id)
 
 
 async def status(message: types.Message):
