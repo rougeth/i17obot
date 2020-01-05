@@ -44,13 +44,10 @@ async def translate_at_transifex(message: types.Message):
     resource, string = await random_string(translated=False, max_size=300)
     string_url = transifex_string_url(resource, string["key"])
 
-    docspath = escape_md("/".join(resource.split("--")))
-    docsurl = f"https://docs.python.org/{docspath}.html"
-
     response = messages.translate_at_transifex.format(
         source=string["source_string"],
         transifex_url=string_url,
-        docsurl=docsurl,
+        docsurl=docsurl(resource).replace("__", "\_\_"),
     )
 
     response = quote_html(response)
