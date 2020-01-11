@@ -17,7 +17,8 @@ async def reminder(user_id):
     try:
         await bot.send_message(user_id, "⏰ *Lembrete!*", parse_mode="markdown")
     except BotBlocked:
-        logger.exception("i17obot blocked by user. userid=%r", message.chat.id)
+        logger.warning("i17obot blocked by user. userid=%r", user_id)
+        return
 
     # Mock is needed because the handler `translate_at_transifex`
     # expects a Message object that contains chat.id attribuites.
