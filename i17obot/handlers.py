@@ -64,6 +64,7 @@ async def status(message: types.Message):
         return
 
     users = await get_all_users()
+    users = [user for user in users if user.get("chat_type") == "private"]
 
     await bot.send_message(
         message.chat.id,
