@@ -54,10 +54,13 @@ status = """📈 *Status*
 """
 
 
-links = """*Principais Links*
+links = """*Referências*
+
+📚 Como fazer a tradução da documentação oficial do Python?
+https://sheilagomes.github.io/traducao-doc-python/
 
 🐍 [@pybr_i18n](@pybr_i18n)
-Grupo no Telegram da comunidade que traduz a documentação.
+Grupo no Telegram da comunidade que traduz Python e Django para português.
 
 🛠 [Transifex](https://www.transifex.com/python-doc/python-newest)
 Ferramenta usada para traduzir a documentação do Python.

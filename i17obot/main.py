@@ -38,6 +38,6 @@ if __name__ == "__main__":
     )
     dp.register_message_handler(handlers.reminder, commands=["reminder", "lembrete"])
     dp.register_message_handler(handlers.status, commands=["status"])
-    dp.register_message_handler(handlers.links, commands=["links"])
+    dp.register_message_handler(handlers.links, commands=["links", "link"])
 
     executor.start_polling(dp, skip_updates=True)
