@@ -5,6 +5,7 @@ Este robô pode te ajudar a traduzir a documentação do Python para português!
 🕹 *Instruções*
 /traduzir - envia um trecho com link para traduzir no Transifex
 /lembrete - ativa ou desativa lembrete diário com link para traduzir
+/links - principais links
 /ajuda - mostra esta mensagem
 
 🇧🇷 *Documentação do Python em Português*
@@ -53,9 +54,17 @@ status = """📈 *Status*
 """
 
 
-links = """ *Links úteis*
-- Tradução online
-- Time no Transifex
-- Código fonte da tradução
-- Grupo no Telegram
+links = """*Principais Links*
+
+🐍 [@pybr_i18n](@pybr_i18n)
+Grupo no Telegram da comunidade que traduz a documentação.
+
+🛠 [Transifex](https://www.transifex.com/python-doc/python-newest)
+Ferramenta usada para traduzir a documentação do Python.
+
+📜 [python/python-docs-pt-br](https://github.com/python/python-docs-pt-br)
+Código fonte da tradução
+
+🤖 [rougeth/i17obot](https://github.com/rougeth/i17obot)
+Código fonte do [@i17obot](@i17obot)
 """

@@ -5,6 +5,7 @@ import sys
 
 from transifex import strings_from_resource, transifex_api
 
+
 async def download_all_strings(file_to_save):
     """ Download all strings in Transifex to JSON file
     """

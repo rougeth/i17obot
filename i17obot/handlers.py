@@ -53,7 +53,10 @@ async def translate_at_transifex(message: types.Message):
     response = quote_html(response)
     try:
         await bot.send_message(
-            message.chat.id, response, disable_web_page_preview=True, parse_mode="markdown",
+            message.chat.id,
+            response,
+            disable_web_page_preview=True,
+            parse_mode="markdown",
         )
     except BotBlocked:
         logger.exception("i17obot blocked by user. userid=%r", message.chat.id)
@@ -73,4 +76,13 @@ async def status(message: types.Message):
             reminders=len([user for user in users if user.get("reminder_set")]),
         ),
         parse_mode="markdown",
+    )
+
+
+async def links(message: types.Message):
+    await bot.send_message(
+        message.chat.id,
+        messages.links,
+        parse_mode="markdown",
+        disable_web_page_preview=True,
     )
