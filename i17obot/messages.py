@@ -51,3 +51,11 @@ status = """📈 *Status*
 - Total users: {users}
 - Total reminders configured: {reminders}
 """
+
+
+links = """ *Links úteis*
+- Tradução online
+- Time no Transifex
+- Código fonte da tradução
+- Grupo no Telegram
+"""
