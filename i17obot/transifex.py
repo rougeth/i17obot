@@ -1,7 +1,9 @@
 import asyncio
+import itertools
 import logging
 import random
 from urllib.parse import quote, urljoin
+
 
 import aiohttp
 from async_lru import alru_cache
@@ -104,3 +106,20 @@ async def translate_string(resource, string_hash, translation):
         f"resource/{resource}/translation/pt_BR/string/{string_hash}/",
         data={"translation": translation},
     )
+
+
+async def download_all_strings():
+    """ Download all strings in Transifex to JSON file
+    """
+    resources = await transifex_api(f"resources/")
+    resources = [resource["slug"] for resource in resources]
+    print("Resources", len(resources))
+
+    sema = asyncio.Semaphore(10)
+    async with sema:
+        strings = await asyncio.gather(
+            *[strings_from_resource(resource) for resource in resources]
+        )
+    strings = list(itertools.chain.from_iterable(strings))
+    print("Strings", len(resources))
+    return strings
