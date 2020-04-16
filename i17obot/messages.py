@@ -2,9 +2,12 @@ start = """🐍💱 @i17obot
 Olá, *{name}*!
 Este robô pode te ajudar a traduzir a documentação do Python para português!!
 
+Clique em /tutorial para começar.
+
 🕹 *Instruções*
 /traduzir - envia um trecho com link para traduzir no Transifex
 /lembrete - ativa ou desativa lembrete diário com link para traduzir
+/tutorial - aprenda como começar a traduzir a documentação
 /links - principais links
 /ajuda - mostra esta mensagem
 
