@@ -88,7 +88,7 @@ Agora, é preciso entrar para o time de tradução do Python:
 3. Selecione a opção "_Portuguese (Brazil)_"
 4. Clique no botão "_Join_"
 
-Agora, basta aguardar até que os moderadores liberarem o seu acesso, não deve demorar.
+Agora, basta aguardar até que os moderadores liberem o seu acesso, não deve demorar.
 """
 
 tutorial_part_3 = """*Tutorial*: 3/3
