@@ -1,5 +1,6 @@
 import logging
 import os
+import typing
 
 from aiogram import types
 from aiogram.utils.exceptions import BotBlocked
@@ -140,7 +141,12 @@ async def tutorial_3(query: types.CallbackQuery):
     )
 
 
-async def tutorial_callback_query(query, message, media, keyboards):
+async def tutorial_callback_query(
+    query: types.CallbackQuery,
+    message: str,
+    media: str,
+    keyboards: typing.Sequence[typing.Tuple[str, str]],
+):
     keyboard_markup = types.InlineKeyboardMarkup()
     keyboard_markup.row(
         *[
