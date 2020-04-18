@@ -40,4 +40,9 @@ if __name__ == "__main__":
     dp.register_message_handler(handlers.status, commands=["status"])
     dp.register_message_handler(handlers.links, commands=["links", "link"])
 
+    dp.register_message_handler(handlers.tutorial_1, commands=["tutorial"])
+    dp.register_callback_query_handler(handlers.tutorial_1, text="tutorial_1")
+    dp.register_callback_query_handler(handlers.tutorial_2, text="tutorial_2")
+    dp.register_callback_query_handler(handlers.tutorial_3, text="tutorial_3")
+
     executor.start_polling(dp, skip_updates=True)
