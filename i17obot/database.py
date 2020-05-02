@@ -1,7 +1,8 @@
 import motor.motor_asyncio
-from decouple import config
 
-client = motor.motor_asyncio.AsyncIOMotorClient(config("DATABASE"))
+import config
+
+client = motor.motor_asyncio.AsyncIOMotorClient(config.DATABASE)
 db = client.i17obot
 
 
@@ -18,10 +19,14 @@ async def create_user(telegram_user, chat_type):
         )
 
 
-async def toggle_reminder(id):
-    user = await db.users.find_one({"id": id})
+async def update_user(user_id, **kwargs):
+    await db.users.update_one({"id": user_id}, {"$set": kwargs})
+
+
+async def toggle_reminder(user_id):
+    user = await db.users.find_one({"id": user_id})
     reminder = user.get("reminder_set", False)
-    await db.users.update_one({"id": id}, {"$set": {"reminder_set": not reminder}})
+    await db.users.update_one({"id": user_id}, {"$set": {"reminder_set": not reminder}})
     return not reminder
 
 
