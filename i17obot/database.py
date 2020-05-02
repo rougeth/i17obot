@@ -23,8 +23,12 @@ async def update_user(user_id, **kwargs):
     await db.users.update_one({"id": user_id}, {"$set": kwargs})
 
 
+async def get_user(user_id):
+    return await db.users.find_one({"id": user_id})
+
+
 async def toggle_reminder(user_id):
-    user = await db.users.find_one({"id": user_id})
+    user = await get_user(user_id)
     reminder = user.get("reminder_set", False)
     await db.users.update_one({"id": user_id}, {"$set": {"reminder_set": not reminder}})
     return not reminder

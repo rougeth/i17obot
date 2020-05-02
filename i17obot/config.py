@@ -9,7 +9,8 @@ DATABASE = decouple.config("DATABASE")
 
 ADMINS = decouple.config("ADMINS", cast=decouple.Csv(int))
 
+DEFAULT_LANGUAGE = "pt_BR"
 AVAILABLE_LANGUAGES = {
-    "pt_br": "Brazilian Portuguese",
+    "pt_BR": "Brazilian Portuguese",
     "es": "Spanish",
 }

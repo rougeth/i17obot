@@ -50,9 +50,9 @@ async def random_resource():
     return resource
 
 
-async def strings_from_resource(resource):
+async def strings_from_resource(resource, language):
     strings = await transifex_api(
-        f"resource/{resource}/translation/pt_BR/strings/?details"
+        f"resource/{resource}/translation/{language}/strings/?details"
     )
     logger.info(
         "getting strings from resource, resource=%s, strings_found=%s",
@@ -65,11 +65,11 @@ async def strings_from_resource(resource):
     return strings
 
 
-async def random_string(resource=None, translated=None, reviewed=None, max_size=None):
+async def random_string(language, resource=None, translated=None, reviewed=None, max_size=None):
     if not resource:
         resource = await random_resource()
 
-    strings = await strings_from_resource(resource)
+    strings = await strings_from_resource(resource, language)
 
     if translated is not None:
         strings = filter(lambda s: bool(s["translation"]) == translated, strings)
@@ -85,18 +85,17 @@ async def random_string(resource=None, translated=None, reviewed=None, max_size=
         if max_size:
             max_size += 300
 
-        return await random_string(
-            translated=translated, reviewed=reviewed, max_size=max_size
-        )
+        resource = None
+        return await random_string(language, resource, translated, reviewed, max_size)
 
     return resource, random.choice(list(strings))
 
 
-def transifex_string_url(resource, key):
+def transifex_string_url(resource, key, language):
     query_string = f"text:'{key[:20]}'"
     return (
         "https://www.transifex.com/"
-        f"python-doc/python-newest/translate/#pt_BR/{resource}/1"
+        f"python-doc/python-newest/translate/#{language}/{resource}/1"
         f"?q={quote(query_string)}"
     )
 
@@ -108,7 +107,7 @@ async def translate_string(resource, string_hash, translation):
     )
 
 
-async def download_all_strings():
+async def download_all_strings(language):
     """ Download all strings in Transifex to JSON file
     """
     resources = await transifex_api(f"resources/")
@@ -118,7 +117,7 @@ async def download_all_strings():
     sema = asyncio.Semaphore(10)
     async with sema:
         strings = await asyncio.gather(
-            *[strings_from_resource(resource) for resource in resources]
+            *[strings_from_resource(resource, language) for resource in resources]
         )
     strings = list(itertools.chain.from_iterable(strings))
     print("Strings", len(resources))

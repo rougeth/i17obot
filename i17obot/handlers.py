@@ -10,7 +10,7 @@ import config
 import messages
 from telegram import bot
 from transifex import random_string, transifex_string_url
-from database import get_all_users, toggle_reminder, update_user
+from database import get_all_users, get_user, toggle_reminder, update_user
 from utils import docsurl
 
 
@@ -50,7 +50,7 @@ async def set_language(query: types.CallbackQuery):
     # TODO: Find a better way to translate the messages the bot sends
     if query.data == "es":
         template = "Idioma elegido: *{}*.\nUtilice el comando /language para cambiarlo."
-    elif query.data == "pt_br":
+    elif query.data == "pt_BR":
         template = "Idioma escolhido: *{}*.\nUse o comando /language para mudar."
 
     await bot.edit_message_text(
@@ -76,8 +76,11 @@ async def reminder(message: types.Message):
 
 
 async def translate_at_transifex(message: types.Message):
-    resource, string = await random_string(translated=False, max_size=300)
-    string_url = transifex_string_url(resource, string["key"])
+    user = await get_user(message.from_user.id)
+    language = user.get("language_code") or config.DEFAULT_LANGUAGE
+
+    resource, string = await random_string(language, translated=False, max_size=300)
+    string_url = transifex_string_url(resource, string["key"], language)
 
     response = messages.translate_at_transifex.format(
         source=string["source_string"],
@@ -98,7 +101,7 @@ async def translate_at_transifex(message: types.Message):
 
 
 async def status(message: types.Message):
-    if message.from_user.id not in ADMINS:
+    if message.from_user.id not in config.ADMINS:
         return
 
     users = await get_all_users()
@@ -128,7 +131,7 @@ async def tutorial_1(message: types.Message):
         await tutorial_callback_query(
             message,
             message=messages.tutorial_part_1,
-            media=os.path.join(BASE_DIR, "data/i17obot-1.mp4"),
+            media=os.path.join(config.BASE_DIR, "data/i17obot-1.mp4"),
             keyboards=[("<< Anterior", "tutorial_2")],
         )
         return
@@ -142,7 +145,7 @@ async def tutorial_1(message: types.Message):
 
     await bot.send_animation(
         chat_id=message.chat.id,
-        animation=types.InputFile(os.path.join(BASE_DIR, "data/i17obot-2.mp4")),
+        animation=types.InputFile(os.path.join(config.BASE_DIR, "data/i17obot-2.mp4")),
         caption=messages.tutorial_part_1,
         parse_mode="markdown",
         reply_markup=keyboard_markup,
@@ -157,7 +160,7 @@ async def tutorial_2(query: types.CallbackQuery):
     await tutorial_callback_query(
         query,
         message=messages.tutorial_part_2,
-        media=os.path.join(BASE_DIR, "data/i17obot-2.mp4"),
+        media=os.path.join(config.BASE_DIR, "data/i17obot-2.mp4"),
         keyboards=keyboards,
     )
 
@@ -167,7 +170,7 @@ async def tutorial_3(query: types.CallbackQuery):
     await tutorial_callback_query(
         query,
         message=messages.tutorial_part_3,
-        media=os.path.join(BASE_DIR, "data/dog_seriously_working.mp4"),
+        media=os.path.join(config.BASE_DIR, "data/dog_seriously_working.mp4"),
         keyboards=[("<< Anterior", "tutorial_2")],
     )
 
