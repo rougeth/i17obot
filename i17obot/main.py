@@ -9,6 +9,7 @@ from aiogram.utils import exceptions, executor
 from aiogram.dispatcher.middlewares import BaseMiddleware
 from decouple import config
 
+import config
 import handlers
 import messages
 from telegram import bot
@@ -33,6 +34,12 @@ if __name__ == "__main__":
     dp.middleware.setup(CreateUserMiddleware())
 
     dp.register_message_handler(handlers.start, commands=["start", "help", "ajuda"])
+
+    dp.register_message_handler(handlers.language, commands=["language"])
+    dp.register_callback_query_handler(
+        handlers.set_language, lambda query: query.data in config.AVAILABLE_LANGUAGES,
+    )
+
     dp.register_message_handler(
         handlers.translate_at_transifex, commands=["translate", "traduzir"]
     )

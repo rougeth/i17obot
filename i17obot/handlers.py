@@ -5,28 +5,59 @@ import typing
 from aiogram import types
 from aiogram.utils.exceptions import BotBlocked
 from aiogram.utils.markdown import escape_md, quote_html
-from decouple import Csv, config
 
+import config
 import messages
 from telegram import bot
 from transifex import random_string, transifex_string_url
-from database import get_all_users, toggle_reminder
+from database import get_all_users, toggle_reminder, update_user
 from utils import docsurl
 
-ADMINS = config("ADMINS", cast=Csv(int))
-
-BASE_DIR = os.path.dirname(__file__)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
 async def start(message: types.Message):
+    await types.ChatActions.typing()
     await bot.send_message(
         message.chat.id,
         messages.start.format(name=message.from_user.first_name),
         disable_web_page_preview=True,
         parse_mode="markdown",
+    )
+
+
+async def language(message: types.Message):
+    await types.ChatActions.typing()
+    keyboard_markup = types.InlineKeyboardMarkup()
+    for code, language in config.AVAILABLE_LANGUAGES.items():
+        keyboard_markup.row(types.InlineKeyboardButton(language, callback_data=code))
+
+    await bot.send_message(
+        message.chat.id,
+        "Translate from English to which language?",
+        disable_web_page_preview=True,
+        parse_mode="markdown",
+        reply_markup=keyboard_markup,
+    )
+
+
+async def set_language(query: types.CallbackQuery):
+    await types.ChatActions.typing()
+    await update_user(query.from_user.id, language_code=query.data)
+
+    # TODO: Find a better way to translate the messages the bot sends
+    if query.data == "es":
+        template = "Idioma elegido: *{}*.\nUtilice el comando /language para cambiarlo."
+    elif query.data == "pt_br":
+        template = "Idioma escolhido: *{}*.\nUse o comando /language para mudar."
+
+    await bot.edit_message_text(
+        template.format(config.AVAILABLE_LANGUAGES[query.data]),
+        query.message.chat.id,
+        query.message.message_id,
+        parse_mode="Markdown",
     )
 
 
