@@ -65,7 +65,9 @@ async def strings_from_resource(resource, language):
     return strings
 
 
-async def random_string(language, resource=None, translated=None, reviewed=None, max_size=None):
+async def random_string(
+    language, resource=None, translated=None, reviewed=None, max_size=None
+):
     if not resource:
         resource = await random_resource()
 

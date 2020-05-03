@@ -11,7 +11,6 @@ from decouple import config
 
 import config
 import handlers
-import messages
 from telegram import bot
 from transifex import random_string, transifex_api
 from database import create_user
