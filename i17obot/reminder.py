@@ -24,6 +24,7 @@ async def reminder(user_id):
     # expects a Message object that contains chat.id attribuites.
     mock = Mock()
     mock.chat.id = user_id
+    mock.from_user.id = user_id
     await handlers.translate_at_transifex(mock)
     print("Reminder sent to:", user_id)
 
