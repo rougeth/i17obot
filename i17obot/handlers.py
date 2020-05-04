@@ -63,6 +63,40 @@ async def set_language(query: types.CallbackQuery):
     )
 
 
+async def projects(message: types.Message):
+    await types.ChatActions.typing()
+    keyboard_markup = types.InlineKeyboardMarkup()
+    for code, language in config.AVAILABLE_PROJECTS.items():
+        keyboard_markup.row(types.InlineKeyboardButton(language, callback_data=code))
+
+    await bot.send_message(
+        message.chat.id,
+        "Which projects would you like to contribute?",
+        disable_web_page_preview=True,
+        parse_mode="markdown",
+        reply_markup=keyboard_markup,
+    )
+
+
+async def set_project(query: types.CallbackQuery):
+    await types.ChatActions.typing()
+    user = await get_user(query.from_user.id)
+    projects = [query.data]
+    if user.get('projects') and query.data not in user.get('projects'):
+        projects = projects + user['projects']
+    await update_user(query.from_user.id, projects=projects)
+
+    project = query.data
+    template = await get_template_for_user(user['id'], 'select_project'):
+
+    await bot.edit_message_text(
+        template,
+        query.message.chat.id,
+        query.message.message_id,
+        parse_mode="Markdown",
+    )
+
+
 async def reminder(message: types.Message):
     if not types.ChatType.is_private(message.chat):
         return

@@ -100,3 +100,5 @@ Não deixe de entrar para o grupo @pybr\_i18n, o melhor canal para tirar dúvida
 /links - Principais links do projeto
 /ajuda
 """
+
+select_project = f"Você adicitnou {project} à lista de projetos para traduzir!"

@@ -14,3 +14,8 @@ AVAILABLE_LANGUAGES = {
     "pt_BR": "Brazilian Portuguese",
     "es": "Spanish",
 }
+
+AVAILABLE_PROJECTS = {
+    "python": "Python",
+    "jupyter": "Jupyter",
+}
