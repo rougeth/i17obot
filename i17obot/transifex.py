@@ -10,14 +10,36 @@ from async_lru import alru_cache
 from decouple import config
 
 TRANSIFEX_TOKEN = config("TRANSIFEX_TOKEN")
-TRANSIFEX_API = "https://www.transifex.com/api/2/project/python-newest/"
+
+TRANSIFEX_API = {
+    "python": "https://www.transifex.com/api/2/project/python-newest/",
+    "jupyter": "https://www.transifex.com/api/2/project/jupyter-meta-documentation/",
+}
+
+PROJECT_URL = {
+    "python": (
+        "https://www.transifex.com/"
+        "python-doc/python-newest/translate/#{language}/{resource}/1"
+        "?q={query_string}"
+    ),
+    "jupyter": (
+        "https://www.transifex.com/"
+        "project-jupyter/jupyter-meta-documentation/translate/#{language}/{resource}/1"
+        "?q={query_string}"
+    ),
+}
+
+SESSIONS_TO_TRANSLATE = {
+    "python": ["bugs", "howto", "library"],
+    "jupyter": [],
+}
 
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
 
-async def transifex_api(url, data=None, retrying=False):
+async def transifex_api(url, project, data=None, retrying=False):
     if retrying:
         logger.info("retrying url=%s", url)
 
@@ -27,7 +49,7 @@ async def transifex_api(url, data=None, retrying=False):
         args = {"json": data} if data else {}
 
         try:
-            async with http_method(urljoin(TRANSIFEX_API, url), **args) as response:
+            async with http_method(urljoin(TRANSIFEX_API[project], url), **args) as response:
                 logger.info("url=%s, status_code=%s", url, response.status)
                 return await response.json()
 
@@ -35,24 +57,27 @@ async def transifex_api(url, data=None, retrying=False):
             logger.error("url=%s, error=%s", url, e)
             if not retrying:
                 await asyncio.sleep(2)
-                return await transifex_api(url, retrying=True)
+                return await transifex_api(url, project, retrying=True)
             raise
 
 
-async def random_resource():
-    resources = await transifex_api(f"resources/")
+async def random_resource(project):
+    resources = await transifex_api(f"resources/", project)
     resources = [resource["slug"] for resource in resources]
-    resources = filter(
-        lambda r: r.split("--")[0] in ["bugs", "howto", "library"], resources
-    )
+
+    if SESSIONS_TO_TRANSLATE[project]:
+        resources = filter(
+            lambda r: r.split("--")[0] in SESSIONS_TO_TRANSLATE[project], resources
+        )
     resource = random.choice(list(resources))
     logger.info("random_resource, resource=%s", resource)
     return resource
 
 
-async def strings_from_resource(resource, language):
+async def strings_from_resource(resource, language, project):
     strings = await transifex_api(
-        f"resource/{resource}/translation/{language}/strings/?details"
+        f"resource/{resource}/translation/{language}/strings/?details",
+        project,
     )
     logger.info(
         "getting strings from resource, resource=%s, strings_found=%s",
@@ -66,12 +91,12 @@ async def strings_from_resource(resource, language):
 
 
 async def random_string(
-    language, resource=None, translated=None, reviewed=None, max_size=None
+    language, project, resource=None, translated=None, reviewed=None, max_size=None
 ):
     if not resource:
-        resource = await random_resource()
+        resource = await random_resource(project)
 
-    strings = await strings_from_resource(resource, language)
+    strings = await strings_from_resource(resource, language, project)
 
     if translated is not None:
         strings = filter(lambda s: bool(s["translation"]) == translated, strings)
@@ -88,17 +113,16 @@ async def random_string(
             max_size += 300
 
         resource = None
-        return await random_string(language, resource, translated, reviewed, max_size)
+        return await random_string(language, project, resource, translated, reviewed, max_size)
 
     return resource, random.choice(list(strings))
 
 
-def transifex_string_url(resource, key, language):
-    query_string = f"text:'{key[:20]}'"
-    return (
-        "https://www.transifex.com/"
-        f"python-doc/python-newest/translate/#{language}/{resource}/1"
-        f"?q={quote(query_string)}"
+def transifex_string_url(resource, key, language, project):
+    return PROJECT_URL[project].format(
+        resource=resource,
+        language=language,
+        query_string = quote(f"text:'{key[:20]}'"),
     )
 
 
@@ -112,7 +136,7 @@ async def translate_string(resource, string_hash, translation):
 async def download_all_strings(language):
     """ Download all strings in Transifex to JSON file
     """
-    resources = await transifex_api(f"resources/")
+    resources = await transifex_api(f"resources/", "python")
     resources = [resource["slug"] for resource in resources]
     print("Resources", len(resources))
 

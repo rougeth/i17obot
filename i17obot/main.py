@@ -39,7 +39,7 @@ if __name__ == "__main__":
         handlers.set_language, lambda query: query.data in config.AVAILABLE_LANGUAGES,
     )
 
-    dp.register_message_handler(handlers.projects, commands=["projects"])
+    dp.register_message_handler(handlers.projects, commands=["projects", "project"])
     dp.register_callback_query_handler(
         handlers.set_project, lambda query: query.data in config.AVAILABLE_PROJECTS,
     )

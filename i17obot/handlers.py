@@ -131,9 +131,15 @@ async def reminder(message: types.Message):
 async def translate_at_transifex(message: types.Message):
     user = await get_user(message.from_user.id)
     language = user.get("language_code") or config.DEFAULT_LANGUAGE
+    project = user.get('project') or config.DEFAULT_PROJECT
 
-    resource, string = await random_string(language, translated=False, max_size=300)
-    string_url = transifex_string_url(resource, string["key"], language)
+    resource, string = await random_string(
+        language,
+        project,
+        translated=False,
+        max_size=300,
+    )
+    string_url = transifex_string_url(resource, string["key"], language, project)
 
     response = await render_template(
         message.from_user.id,
