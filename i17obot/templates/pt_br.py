@@ -105,18 +105,10 @@ list_projects_start = """
 Qual projeto você quer contribuir para traduções?
 """
 
-all_projects_added  = """
-Você já está contribuindo para todos os projetos disponíveis!
-
-Projetos que você já está traduzindo:
-{projects}
-"""
-
 list_projects = """
 Qual projeto você quer contribuir para traduções?
 
-Projetos que você já está traduzindo:
-{projects}
+Você está traduzindo o projeto {project}
 """
 
-selected_project = "Você adicionou {project} à lista de projetos para traduzir!"
+selected_project = "Você vai contribuir com o projeto {project}!"

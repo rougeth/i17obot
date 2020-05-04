@@ -70,26 +70,20 @@ async def set_language(query: types.CallbackQuery):
 async def projects(message: types.Message):
     await types.ChatActions.typing()
     user = await get_user(message.from_user.id)
-    projects = user.get('projects', [])
+    project = user.get('project', '')
 
-    if len(projects) == len(config.AVAILABLE_PROJECTS.items()):
-        template = await render_template(
-            user['id'],
-            'all_projects_added',
-            projects='teste'
-        )
-    elif projects:
+    if project:
         template = await render_template(
             user['id'],
             'list_projects',
-            projects="".join(f' - {p}\n' for p in projects)
+            project=project
         )
     else:
         template = await render_template(user['id'], 'list_projects_start')
 
     keyboard_markup = types.InlineKeyboardMarkup()
     for code, project in config.AVAILABLE_PROJECTS.items():
-        if code not in projects:
+        if code not in project:
             keyboard_markup.row(types.InlineKeyboardButton(
                 project,
                 callback_data=code)
@@ -107,14 +101,10 @@ async def projects(message: types.Message):
 async def set_project(query: types.CallbackQuery):
     await types.ChatActions.typing()
     user = await get_user(query.from_user.id)
-    projects = [query.data]
-    if user.get('projects') and query.data not in user.get('projects'):
-        projects = projects + user['projects']
-    await update_user(query.from_user.id, projects=projects)
+    await update_user(query.from_user.id, project=query.data)
 
-    template = (
-        await render_template(user['id'], 'selected_project')
-    ).format(project=query.data)
+    template = await render_template(user['id'], 'selected_project',
+                                     project=query.data)
 
     await bot.edit_message_text(
         template,
