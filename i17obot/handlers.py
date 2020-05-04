@@ -22,15 +22,10 @@ async def start(message: types.Message):
     await types.ChatActions.typing()
 
     response = await render_template(
-        message.from_user.id,
-        "start",
-        name=message.from_user.first_name
+        message.from_user.id, "start", name=message.from_user.first_name
     )
     await bot.send_message(
-        message.chat.id,
-        response,
-        disable_web_page_preview=True,
-        parse_mode="markdown",
+        message.chat.id, response, disable_web_page_preview=True, parse_mode="markdown",
     )
 
 
@@ -70,24 +65,17 @@ async def set_language(query: types.CallbackQuery):
 async def projects(message: types.Message):
     await types.ChatActions.typing()
     user = await get_user(message.from_user.id)
-    project = user.get('project', '')
+    project = user.get("project", "")
 
     if project:
-        template = await render_template(
-            user['id'],
-            'list_projects',
-            project=project
-        )
+        template = await render_template(user["id"], "list_projects", project=project)
     else:
-        template = await render_template(user['id'], 'list_projects_start')
+        template = await render_template(user["id"], "list_projects_start")
 
     keyboard_markup = types.InlineKeyboardMarkup()
     for code, project in config.AVAILABLE_PROJECTS.items():
         if code not in project:
-            keyboard_markup.row(types.InlineKeyboardButton(
-                project,
-                callback_data=code)
-            )
+            keyboard_markup.row(types.InlineKeyboardButton(project, callback_data=code))
 
     await bot.send_message(
         message.chat.id,
@@ -103,8 +91,7 @@ async def set_project(query: types.CallbackQuery):
     user = await get_user(query.from_user.id)
     await update_user(query.from_user.id, project=query.data)
 
-    template = await render_template(user['id'], 'selected_project',
-                                     project=query.data)
+    template = await render_template(user["id"], "selected_project", project=query.data)
 
     await bot.edit_message_text(
         template,
@@ -131,13 +118,10 @@ async def reminder(message: types.Message):
 async def translate_at_transifex(message: types.Message):
     user = await get_user(message.from_user.id)
     language = user.get("language_code") or config.DEFAULT_LANGUAGE
-    project = user.get('project') or config.DEFAULT_PROJECT
+    project = user.get("project") or config.DEFAULT_PROJECT
 
     resource, string = await random_string(
-        language,
-        project,
-        translated=False,
-        max_size=300,
+        language, project, translated=False, max_size=300,
     )
     string_url = transifex_string_url(resource, string["key"], language, project)
 

@@ -49,7 +49,9 @@ async def transifex_api(url, project, data=None, retrying=False):
         args = {"json": data} if data else {}
 
         try:
-            async with http_method(urljoin(TRANSIFEX_API[project], url), **args) as response:
+            async with http_method(
+                urljoin(TRANSIFEX_API[project], url), **args
+            ) as response:
                 logger.info("url=%s, status_code=%s", url, response.status)
                 return await response.json()
 
@@ -75,8 +77,7 @@ async def random_resource(project):
 
 async def strings_from_resource(resource, language, project):
     strings = await transifex_api(
-        f"resource/{resource}/translation/{language}/strings/?details",
-        project,
+        f"resource/{resource}/translation/{language}/strings/?details", project,
     )
     logger.info(
         "getting strings from resource, resource=%s, strings_found=%s",
@@ -112,16 +113,16 @@ async def random_string(
             max_size += 300
 
         resource = None
-        return await random_string(language, project, resource, translated, reviewed, max_size)
+        return await random_string(
+            language, project, resource, translated, reviewed, max_size
+        )
 
     return resource, random.choice(list(strings))
 
 
 def transifex_string_url(resource, key, language, project):
     return PROJECT_URL[project].format(
-        resource=resource,
-        language=language,
-        query_string = quote(f"text:'{key[:20]}'"),
+        resource=resource, language=language, query_string=quote(f"text:'{key[:20]}'"),
     )
 
 
