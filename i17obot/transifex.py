@@ -29,9 +29,9 @@ PROJECT_URL = {
     ),
 }
 
-SESSIONS_TO_TRANSLATE = {
-    "python": ["bugs", "howto", "library"],
-    "jupyter": [],
+FILTER_RESOURCES_TO_BE_TRANSLATED = {
+    "python": lambda r: r.split("--")[0] in ["bugs", "howto", "library"],
+    "jupyter": None,
 }
 
 
@@ -65,10 +65,9 @@ async def random_resource(project):
     resources = await transifex_api(f"resources/", project)
     resources = [resource["slug"] for resource in resources]
 
-    if SESSIONS_TO_TRANSLATE[project]:
-        resources = filter(
-            lambda r: r.split("--")[0] in SESSIONS_TO_TRANSLATE[project], resources
-        )
+    if FILTER_RESOURCES_TO_BE_TRANSLATED[project]:
+        resources = filter(FILTER_RESOURCES_TO_BE_TRANSLATED[project], resources)
+
     resource = random.choice(list(resources))
     logger.info("random_resource, resource=%s", resource)
     return resource
