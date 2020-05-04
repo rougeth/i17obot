@@ -101,4 +101,22 @@ Não deixe de entrar para o grupo @pybr\_i18n, o melhor canal para tirar dúvida
 /ajuda
 """
 
-select_project = f"Você adicitnou {project} à lista de projetos para traduzir!"
+list_projects_start = """
+Qual projeto você quer contribuir para traduções?
+"""
+
+all_projects_added  = """
+Você já está contribuindo para todos os projetos disponíveis!
+
+Projetos que você já está traduzindo:
+{projects}
+"""
+
+list_projects = """
+Qual projeto você quer contribuir para traduções?
+
+Projetos que você já está traduzindo:
+{projects}
+"""
+
+selected_project = "Você adicionou {project} à lista de projetos para traduzir!"
