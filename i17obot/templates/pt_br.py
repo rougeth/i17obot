@@ -100,3 +100,15 @@ Não deixe de entrar para o grupo @pybr\_i18n, o melhor canal para tirar dúvida
 /links - Principais links do projeto
 /ajuda
 """
+
+list_projects_start = """
+Qual projeto você quer contribuir para traduções?
+"""
+
+list_projects = """
+Qual projeto você quer contribuir para traduções?
+
+Você está traduzindo o projeto {project}
+"""
+
+selected_project = "Você vai contribuir com o projeto {project}!"
