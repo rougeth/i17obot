@@ -18,12 +18,12 @@ https://python-docs-es.readthedocs.io/es/3.7/index.html
 https://github.com/rougeth/i17obot
 
 Pero, por qué *i17o*? _Este bot fue desarrollado originalmente en portugués_
-_"La internacionalización es un proceso de desarrollo y/o adaptación de un producto al idioma y cultura de un país"
+_"La internacionalización es un proceso de desarrollo y/o adaptación de un producto al idioma y cultura de un país"_
 
 *internacionalização*
 *i         17 letras         o*
 
-Referencia: [Wikipedia](https://es.wikipedia.org/wiki/Internacionalizaci%C3%B3n_y_localizaci%C3%B3n)
+Referencia: [Wikipedia](https://u.rgth.co/i17o-ref-es)
 """
 
 
