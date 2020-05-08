@@ -1,29 +1,29 @@
 start = """🐍💱 @i17obot
-Olá, *{name}*!
-Este robô pode te ajudar a traduzir a documentação do Python para português!!
+Hola, *{name}*!
+Este bot puede ayudarte a traducir la documentación do Python al español!!
 
-Clique em /tutorial para começar.
+Haz click en /tutorial para comenzar.
 
-🕹 *Instruções*
-/traduzir - envia um trecho com link para traduzir no Transifex
-/lembrete - ativa ou desativa lembrete diário com link para traduzir
-/tutorial - aprenda como começar a traduzir a documentação
-/links - principais links
-/ajuda - mostra esta mensagem
+🕹 *Instrucciones*
+/traducir - envía un fragmento con un link para traducir en Transifex
+/recordatorio - activa o desactiva el recordatorio diario con el link para traducir
+/tutorial - aprenda como comenzar a traducir la documentación
+/links - links principales
+/ayuda - muestra este mensaje
 
-🇧🇷 *Documentação do Python em Português*
-https://docs.python.org/pt-br/
+🇺🇸 *Documentación de Python en Español*
+https://python-docs-es.readthedocs.io/es/3.7/index.html
 
-📖 *Código Aberto*
+📖 *Código Abierto*
 https://github.com/rougeth/i17obot
 
-Mas, por que *i17o*?
-_"Internacionalização são processos de desenvolvimento e/ou adaptação de um produto para uma língua e cultura de um país."_
+Pero, por qué *i17o*? _Este bot fue desarrollado originalmente en portugués_
+_"La internacionalización es un proceso de desarrollo y/o adaptación de un producto al idioma y cultura de un país"
 
 *internacionalização*
 *i         17 letras         o*
 
-Referência: [Wikipedia](https://u.rgth.co/i17o-ref)
+Referencia: [Wikipedia](https://es.wikipedia.org/wiki/Internacionalizaci%C3%B3n_y_localizaci%C3%B3n)
 """
 
 
@@ -32,73 +32,73 @@ translate_at_transifex = """
 ```
 {source}
 ```
-🔗 *Link para tradução*:
+🔗 *Link para traducción*:
 [{transifex_url}]({transifex_url})...
 
-📚 *Referência e contexto*:
+📚 *Referencia y contexto*:
 {docsurl}
 
-/traduzir para receber outro trecho
+/traducir para recibir otro fragmento
 """
 
-reminder_on = """*Lembrete configurado* 🎉🥳
-Você deverá receber um trecho para ser traduzido por dia.
-Se você quiser, use o comando /traduzir para receber outro trecho a qualquer momento.
-Para desativar, use o comando /lembrete.
+reminder_on = """*Recordatorio configurado* 🎉🥳
+Deberías recibir un fragmento para traducir por día.
+Si quieres, usa el comando /traducir para recibir otro fragmento en cualquier momento.
+Para desactivar, usa el comando /recordatorio.
 """
 
-reminder_off = """*Lembrete removido* 😢
-Mas você pode continuar traduzindo usando o comando /traduzir.
+reminder_off = """*Recordatorio eliminado* 😢
+Puedes continuar traduciendo usando el comando /traducir.
 """
 
 status = """📈 *Status*
-- Total users: {users}
-- Total reminders configured: {reminders}
+- Usuarios totales: {users}
+- Recordatorios configurados: {reminders}
 """
 
 
-links = """*Referências*
+links = """*Referencias*
 
-📚 Como fazer a tradução da documentação oficial do Python?
-https://sheilagomes.github.io/traducao-doc-python/
+📚 Cómo traducimos la documentación oficial de Python?
+https://python-docs-es.readthedocs.io/es/3.7/CONTRIBUTING.html
 
-🐍 [@pybr_i18n](@pybr_i18n)
-Grupo no Telegram da comunidade que traduz Python e Django para português.
+🐍 [@python_docs_es](@python_docs_es)
+Grupo de Telegram para trabajar en la traducción de Python al español.
 
 🛠 [Transifex](https://www.transifex.com/python-doc/python-newest)
-Ferramenta usada para traduzir a documentação do Python.
+Herramienta utilizada para traducir la documentación de Python.
 
-📜 [python/python-docs-pt-br](https://github.com/python/python-docs-pt-br)
-Código fonte da tradução
+📜 [PyCampES/python-docs-es](https://github.com/PyCampES/python-docs-es)
+Código fuente de la traducción.
 
 🤖 [rougeth/i17obot](https://github.com/rougeth/i17obot)
-Código fonte do [@i17obot](@i17obot)
+Código fuente de [@i17obot](@i17obot)
 """
 
 tutorial_part_1 = """*Tutorial*: 1/3
-Para começar, Crie uma conta no Transifex, serviço que usamos para traduzir a documentação. Para isso, basta acessar o site:
+Para comenzar, cree una cuenta en Transifex, servicio que usamos para traducir la documentación. Para eso, acceda al sitio:
 https://transifex.com/signup
 """
 
 tutorial_part_2 = """*Tutorial*: 2/3
-Agora, é preciso entrar para o time de tradução do Python:
+Ahora es necesario unirse al equipo de traducción de Python:
 
-1. Acesse o site: https://transifex.com/python-doc/python-newest
-2. Clique no botão "_Join team_"
-3. Selecione a opção "_Portuguese (Brazil)_"
-4. Clique no botão "_Join_"
+1. Acceder al sitio: https://transifex.com/python-doc/python-newest
+2. Click en el botón "_Join team_"
+3. Seleccione la opción "_Spanish_"
+4. Click en el botón "_Join_"
 
-Agora, basta aguardar até que os moderadores liberem o seu acesso, não deve demorar.
+Basta esperar a que los moderadores aprueben la solicitud.
 """
 
 tutorial_part_3 = """*Tutorial*: 3/3
-🎉 Pronto! Agora você já pode começar a *contribuir* para a tradução da documentação do Python!
+🎉 Listo! Ahora puedes comenzar a *contribuir* en la traducción de la documentación de Python!
 
-Não deixe de entrar para o grupo @pybr\_i18n, o melhor canal para tirar dúvidas, trocar ideias e sugestões.
+No olvides consultar tus dudas o sugerir ideas en el canal @python\_docs\_es.
 
-/traduzir - Comece já a traduzir
-/links - Principais links do projeto
-/ajuda
+/traducir - Comience a traducir
+/links - Links principales del proyecto
+/ayuda
 """
 
 list_projects_start = """
