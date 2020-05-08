@@ -11,9 +11,8 @@ Haz click en /tutorial para comenzar.
 /links - links principales
 /ayuda - muestra este mensaje
 
-# Esto es temporal hasta que exista la versión española en la doc. oficial de Python
-🇺🇸 *Documentación de Python en Inglés*
-https://docs.python.org/
+🇺🇸 *Documentación de Python en Español*
+https://python-docs-es.readthedocs.io/es/3.7/index.html
 
 📖 *Código Abierto*
 https://github.com/rougeth/i17obot
@@ -61,7 +60,7 @@ status = """📈 *Status*
 links = """*Referencias*
 
 📚 Cómo traducimos la documentación oficial de Python?
-https://sheilagomes.github.io/traducao-doc-python/
+https://python-docs-es.readthedocs.io/es/3.7/CONTRIBUTING.html
 
 🐍 [@python_docs_es](@python_docs_es)
 Grupo de Telegram para trabajar en la traducción de Python al español.
