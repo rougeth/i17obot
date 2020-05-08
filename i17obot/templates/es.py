@@ -5,11 +5,11 @@ Este bot puede ayudarte a traducir la documentación do Python al español!!
 Haz click en /tutorial para comenzar.
 
 🕹 *Instrucciones*
-/traduzir - envía un fragmento con un link para traducir en Transifex
-/lembrete - activa o desactiva el recordatorio diario con el link para traducir
+/traducir - envía un fragmento con un link para traducir en Transifex
+/recordatorio - activa o desactiva el recordatorio diario con el link para traducir
 /tutorial - aprenda como comenzar a traducir la documentación
 /links - links principales
-/ajuda - muestra este mensaje
+/ayuda - muestra este mensaje
 
 # Esto es temporal hasta que exista la versión española en la doc. oficial de Python
 🇺🇸 *Documentación de Python en Inglés*
@@ -39,17 +39,17 @@ translate_at_transifex = """
 📚 *Referencia y contexto*:
 {docsurl}
 
-/traduzir para recibir otro fragmento
+/traducir para recibir otro fragmento
 """
 
 reminder_on = """*Recordatorio configurado* 🎉🥳
 Deberías recibir un fragmento para traducir por día.
-Si quieres, usa el comando /traduzir para recibir otro fragmento en cualquier momento.
-Para desactivar, usa el comando /lembrete.
+Si quieres, usa el comando /traducir para recibir otro fragmento en cualquier momento.
+Para desactivar, usa el comando /recordatorio.
 """
 
 reminder_off = """*Recordatorio eliminado* 😢
-Puedes continuar traduciendo usando el comando /traduzir.
+Puedes continuar traduciendo usando el comando /traducir.
 """
 
 status = """📈 *Status*
@@ -97,7 +97,7 @@ tutorial_part_3 = """*Tutorial*: 3/3
 
 No olvides consultar tus dudas o sugerir ideas en el canal @python\_docs\_es.
 
-/traduzir - Comience a traducir
+/traducir - Comience a traducir
 /links - Links principales del proyecto
-/ajuda
+/ayuda
 """
