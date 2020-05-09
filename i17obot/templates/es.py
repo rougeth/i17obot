@@ -1,6 +1,6 @@
 start = """🐍💱 @i17obot
 Hola, *{name}*!
-Este bot puede ayudarte a traducir la documentación do Python al español!!
+Este bot puede ayudarte a traducir la documentación de Python al español!!
 
 Haz click en /tutorial para comenzar.
 
@@ -11,7 +11,7 @@ Haz click en /tutorial para comenzar.
 /links - links principales
 /ayuda - muestra este mensaje
 
-🇺🇸 *Documentación de Python en Español*
+🇪🇸 *Documentación de Python en Español*
 https://python-docs-es.readthedocs.io/es/3.7/index.html
 
 📖 *Código Abierto*
