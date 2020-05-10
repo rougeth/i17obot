@@ -65,16 +65,18 @@ async def set_language(query: types.CallbackQuery):
 async def projects(message: types.Message):
     await types.ChatActions.typing()
     user = await get_user(message.from_user.id)
-    project = user.get("project", "")
+    user_project = user.get("project", "")
 
-    if project:
-        template = await render_template(user["id"], "list_projects", project=project)
+    if user_project:
+        template = await render_template(
+            user["id"], "list_projects", project=user_project
+        )
     else:
         template = await render_template(user["id"], "list_projects_start")
 
     keyboard_markup = types.InlineKeyboardMarkup()
     for code, project in config.AVAILABLE_PROJECTS.items():
-        if code not in project:
+        if code != user_project:
             keyboard_markup.row(types.InlineKeyboardButton(project, callback_data=code))
 
     await bot.send_message(
