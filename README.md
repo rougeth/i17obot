@@ -1,7 +1,9 @@
 # 🐍💱 i17obot
-[@i17obot](https://t.me/i17obot)
 
-Telegram bot created to help the translation of the Python documentation to Brazilian Portuguese.
+![Tests Workflow](https://github.com/rougeth/i17obot/workflows/Tests/badge.svg?branch=master)
+
+
+[@i17obot](https://t.me/i17obot) - A Telegram bot created to help the translation of the Python documentation to Brazilian Portuguese, expanded to multiple languages and projects.
 
 ![](https://i.giphy.com/media/QsY8yp5q4atcQ/giphy.webp)
 

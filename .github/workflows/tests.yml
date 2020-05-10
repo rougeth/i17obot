@@ -1,4 +1,4 @@
-name: i17obot
+name: Tests
 on:
   push:
     branches: [master]
