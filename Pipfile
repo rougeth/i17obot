@@ -20,6 +20,7 @@ Jinja2 = "*"
 async-lru = "*"
 motor = "*"
 pymongo = {extras = ["srv"],version = "*"}
+sentry-sdk = "*"
 
 [requires]
 python_version = "3.8"

@@ -20,3 +20,5 @@ AVAILABLE_PROJECTS = {
     "python": "Python",
     "jupyter": "Jupyter",
 }
+
+SENTRY_DSN = decouple.config("SENTRY_DSN", default="")

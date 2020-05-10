@@ -3,6 +3,7 @@ import logging
 import os
 
 import aiohttp
+import sentry_sdk
 from aiogram import Bot, Dispatcher, types
 from aiogram.types import inline_keyboard
 from aiogram.utils import exceptions, executor
@@ -29,6 +30,9 @@ class CreateUserMiddleware(BaseMiddleware):
 
 
 if __name__ == "__main__":
+    if config.SENTRY_DSN:
+        sentry_sdk.init(config.SENTRY_DSN)
+
     dp = Dispatcher(bot, loop=asyncio.get_event_loop())
     dp.middleware.setup(CreateUserMiddleware())
 
