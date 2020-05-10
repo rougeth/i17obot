@@ -32,7 +32,9 @@ if __name__ == "__main__":
     dp = Dispatcher(bot, loop=asyncio.get_event_loop())
     dp.middleware.setup(CreateUserMiddleware())
 
-    dp.register_message_handler(handlers.start, commands=["start", "help", "ajuda", "ayuda"])
+    dp.register_message_handler(
+        handlers.start, commands=["start", "help", "ajuda", "ayuda"]
+    )
 
     dp.register_message_handler(handlers.language, commands=["language"])
     dp.register_callback_query_handler(
@@ -47,7 +49,9 @@ if __name__ == "__main__":
     dp.register_message_handler(
         handlers.translate_at_transifex, commands=["translate", "traduzir", "traducir"]
     )
-    dp.register_message_handler(handlers.reminder, commands=["reminder", "lembrete", "recordatorio"])
+    dp.register_message_handler(
+        handlers.reminder, commands=["reminder", "lembrete", "recordatorio"]
+    )
     dp.register_message_handler(handlers.status, commands=["status"])
     dp.register_message_handler(handlers.links, commands=["links", "link"])
 

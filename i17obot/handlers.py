@@ -3,7 +3,7 @@ import os
 import typing
 
 from aiogram import types
-from aiogram.utils.exceptions import BotBlocked
+from aiogram.utils.exceptions import BotBlocked, TelegramAPIError
 from aiogram.utils.markdown import escape_md, quote_html
 
 import config
@@ -143,6 +143,10 @@ async def translate_at_transifex(message: types.Message):
         )
     except BotBlocked:
         logger.exception("i17obot blocked by user. userid=%r", message.chat.id)
+    except TelegramAPIError:
+        logger.exception(
+            "Telegram API Error while sending message. message=%r", response
+        )
 
 
 async def status(message: types.Message):
