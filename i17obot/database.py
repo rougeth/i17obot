@@ -24,7 +24,7 @@ async def update_user(user_id, **kwargs):
 
 
 async def get_user(user_id):
-    return await db.users.find_one({"id": user_id})
+    return (await db.users.find_one({"id": user_id})) or {}
 
 
 async def toggle_reminder(user_id):
