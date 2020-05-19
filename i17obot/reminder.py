@@ -5,8 +5,8 @@ from unittest.mock import Mock
 from aiogram.utils.exceptions import BotBlocked
 
 import handlers
-from telegram import bot
 from database import get_users_with_reminder_on
+from telegram import bot
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)

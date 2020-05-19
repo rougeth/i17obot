@@ -4,7 +4,6 @@ import logging
 import random
 from urllib.parse import quote, urljoin
 
-
 import aiohttp
 from async_lru import alru_cache
 from decouple import config

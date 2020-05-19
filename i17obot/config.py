@@ -2,7 +2,6 @@ import os
 
 import decouple
 
-
 BASE_DIR = os.path.dirname(__file__)
 
 DATABASE = decouple.config("DATABASE")
