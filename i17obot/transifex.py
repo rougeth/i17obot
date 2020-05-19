@@ -45,14 +45,19 @@ async def transifex_api(url, project, data=None, retrying=False):
     auth = aiohttp.BasicAuth(login="api", password=TRANSIFEX_TOKEN)
     async with aiohttp.ClientSession(auth=auth) as session:
         http_method = session.put if data else session.get
-        args = {"json": data} if data else {}
+        kwargs = {"json": data} if data else {}
 
         try:
             async with http_method(
-                urljoin(TRANSIFEX_API[project], url), **args
+                urljoin(TRANSIFEX_API[project], url), **kwargs
             ) as response:
                 logger.info("url=%s, status_code=%s", url, response.status)
-                return await response.json()
+                try:
+                    return await response.json()
+                except aiohttp.ContentTypeError:
+                    response = await response.text()
+                    logger.warn("response=%r", response)
+                    return response
 
         except aiohttp.client_exceptions.ClientConnectorSSLError as e:
             logger.error("url=%s, error=%s", url, e)
@@ -60,6 +65,14 @@ async def transifex_api(url, project, data=None, retrying=False):
                 await asyncio.sleep(2)
                 return await transifex_api(url, project, retrying=True)
             raise
+
+
+async def review_string(project, resource, language, translation, string_hash):
+    return await transifex_api(
+        f"resource/{resource}/translation/{language}/string/{string_hash}",
+        project,
+        data={"translation": translation, "reviewed": True},
+    )
 
 
 async def random_resource(project):

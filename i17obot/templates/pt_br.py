@@ -41,6 +41,40 @@ translate_at_transifex = """
 /traduzir para receber outro trecho
 """
 
+review_translation = """
+📝 *Texto original*:
+```
+{source}
+```
+
+🔖 *Tradução*:
+```
+{translation}
+```
+🔗 [Link para tradução]({transifex_url})
+
+📚 *Referência e contexto*:
+{docsurl}
+"""
+
+translation_correct = """
+*Tradução revisada com sucesso!* 🎉🥳
+Se quiser continuar revisando as traduções, use o comando /revisar.
+Obrigado pela contribuição, *{name}*.
+"""
+
+translation_incorrect = """
+Sem problemas, *{name}*.
+Se você quiser corrigir a tradução, acesse a [tradução no Transifex]({string_url}).
+Obrigado pela contribuição!
+"""
+
+dont_know_review = """
+Sem problemas, *{name}*.
+Para tentar outra tradução, use o comando /revisar.
+Obrigado pela contribuição!
+"""
+
 reminder_on = """*Lembrete configurado* 🎉🥳
 Você deverá receber um trecho para ser traduzido por dia.
 Se você quiser, use o comando /traduzir para receber outro trecho a qualquer momento.

@@ -42,6 +42,18 @@ if __name__ == "__main__":
     dp.register_message_handler(
         handlers.translate_at_transifex, commands=["translate", "traduzir", "traducir"]
     )
+    dp.register_message_handler(
+        handlers.review_translation, commands=["review", "revisar"]
+    )
+    dp.register_callback_query_handler(
+        handlers.confirm_review,
+        lambda query: query.data
+        in [
+            "review-translation-correct",
+            "review-translation-incorrect",
+            "review-translation-dont-know",
+        ],
+    )
     dp.register_message_handler(handlers.status, commands=["status"])
     dp.register_message_handler(handlers.links, commands=["links", "link"])
 
@@ -50,11 +62,15 @@ if __name__ == "__main__":
 
     dp.register_message_handler(handlers.settings.language, commands=["language"])
     dp.register_callback_query_handler(
-        handlers.settings.set_language, lambda query: query.data in config.AVAILABLE_LANGUAGES,
+        handlers.settings.set_language,
+        lambda query: query.data in config.AVAILABLE_LANGUAGES,
     )
-    dp.register_message_handler(handlers.settings.projects, commands=["projects", "project"])
+    dp.register_message_handler(
+        handlers.settings.projects, commands=["projects", "project"]
+    )
     dp.register_callback_query_handler(
-        handlers.settings.set_project, lambda query: query.data in config.AVAILABLE_PROJECTS,
+        handlers.settings.set_project,
+        lambda query: query.data in config.AVAILABLE_PROJECTS,
     )
     dp.register_message_handler(
         handlers.settings.reminder, commands=["reminder", "lembrete", "recordatorio"]

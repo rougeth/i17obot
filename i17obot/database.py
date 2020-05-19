@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import motor.motor_asyncio
 
 import config
@@ -20,6 +22,7 @@ async def create_user(telegram_user, chat_type):
 
 
 async def update_user(user_id, **kwargs):
+    kwargs["updated_at"] = datetime.utcnow()
     await db.users.update_one({"id": user_id}, {"$set": kwargs})
 
 
@@ -30,7 +33,7 @@ async def get_user(user_id):
 async def toggle_reminder(user_id):
     user = await get_user(user_id)
     reminder = user.get("reminder_set", False)
-    await db.users.update_one({"id": user_id}, {"$set": {"reminder_set": not reminder}})
+    await update_user(user_id, reminder_set=(not reminder))
     return not reminder
 
 
