@@ -1,6 +1,6 @@
 # 🐍💱 i17obot
 
-![Tests Workflow](https://github.com/rougeth/i17obot/workflows/Tests/badge.svg?branch=master)
+[![Tests Workflow](https://github.com/rougeth/i17obot/workflows/Tests/badge.svg?branch=master)](https://github.com/rougeth/i17obot/actions?query=workflow%3ATests)
 
 
 [@i17obot](https://t.me/i17obot) - A Telegram bot created to help the translation of the Python documentation to Brazilian Portuguese, expanded to multiple languages and projects.
