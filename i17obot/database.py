@@ -46,3 +46,9 @@ async def get_users_with_reminder_on():
 
 async def get_all_users():
     return [user async for user in db.users.find()]
+
+
+async def save_translated_string(user, string):
+    db.strings.insert_one(
+        {"user": user.id, "string": string, "created_at": datetime.utcnow(),}
+    )

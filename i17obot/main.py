@@ -14,10 +14,18 @@ import config
 import handlers
 from database import create_user
 from telegram import bot
-from transifex import random_string, transifex_api
+from utils import check_user_state
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("broadcast")
+
+
+class LogMessagesMiddleware(BaseMiddleware):
+    async def on_pre_process_message(self, message: types.Message, *args):
+        logger.info("Message:")
+        if message.from_user.id not in self.cached_user_ids:
+            await create_user(message.from_user, chat_type=message.chat.type)
+            self.cached_user_ids.append(message.from_user.id)
 
 
 class CreateUserMiddleware(BaseMiddleware):
@@ -39,9 +47,31 @@ if __name__ == "__main__":
     dp.register_message_handler(
         handlers.start, commands=["start", "help", "ajuda", "ayuda"]
     )
+
     dp.register_message_handler(
-        handlers.translate_at_transifex, commands=["translate", "traduzir", "traducir"]
+        handlers.translate.translate, commands=["translate", "traduzir", "traducir"]
     )
+    dp.register_callback_query_handler(
+        handlers.translate.translate, lambda query: query.data == "translate",
+    )
+
+    dp.register_callback_query_handler(
+        handlers.translate.ask_for_translation,
+        lambda query: query.data in ["init-translation"],
+    )
+    dp.register_message_handler(
+        handlers.translate.review, check_user_state("translating"), run_task=True
+    )
+    dp.register_callback_query_handler(
+        handlers.translate.confirm_translation,
+        lambda query: query.data == "confirm-translation",
+    )
+    dp.register_callback_query_handler(
+        handlers.translate.confirm,
+        lambda query: query.data
+        in ["confirm-translation", "translate-again", "cancel-translating"],
+    )
+
     dp.register_message_handler(
         handlers.review_translation, commands=["review", "revisar"]
     )
@@ -74,6 +104,16 @@ if __name__ == "__main__":
     )
     dp.register_message_handler(
         handlers.settings.reminder, commands=["reminder", "lembrete", "recordatorio"]
+    )
+
+    dp.register_callback_query_handler(
+        handlers.settings.transifex_username,
+        lambda query: query.data == "configure-username",
+    )
+    dp.register_message_handler(
+        handlers.settings.set_transifex_username,
+        check_user_state("configuring_transifex"),
+        run_task=True,
     )
 
     # Tutorial

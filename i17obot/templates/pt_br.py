@@ -26,7 +26,6 @@ _"Internacionalização são processos de desenvolvimento e/ou adaptação de um
 Referência: [Wikipedia](https://u.rgth.co/i17o-ref)
 """
 
-
 translate_at_transifex = """
 📝 *Texto original*:
 ```
@@ -39,6 +38,30 @@ translate_at_transifex = """
 {docsurl}
 
 /traduzir para receber outro trecho
+"""
+
+translate = """
+📚 *Trecho na documentação*:
+[{docsurl}]({docsurl})
+"""
+
+init_translation = """
+📚 *Trecho na documentação*:
+[{docsurl}]({docsurl})
+
+*Digite a tradução abaixo...*
+"""
+
+confirm_translation = """
+📝 *Texto original*:
+```
+{source}
+```
+
+📝 *Tradução*:
+```
+{translation}
+```
 """
 
 review_translation = """
@@ -64,15 +87,33 @@ Obrigado pela contribuição, *{name}*.
 """
 
 translation_incorrect = """
-Sem problemas, *{name}*.
-Se você quiser corrigir a tradução, acesse a [tradução no Transifex]({string_url}).
-Obrigado pela contribuição!
+Ok, se você puder corrigir a tradução, acesse o [link no Transifex]({string_url}).
+Para corrigir outro texto, use o comando /revisar.
+Obrigado pela contribuição *{name}*!
 """
 
 dont_know_review = """
 Sem problemas, *{name}*.
 Para tentar outra tradução, use o comando /revisar.
 Obrigado pela contribuição!
+"""
+
+missing_username = """
+⚠️ *Antes de começar*, você precisa me enviar o seu nome de usuário do Transifex.
+
+Dessa forma, as traduções que você fizer do Telegram, serão atribuidas a você.
+
+Clique no botão abaixo para configurar.
+"""
+
+configuring_username = """
+⚙️ *Configurando usuário do Transifex*
+
+*1* - Acesse [seu perfil no Transifex](https://www.transifex.com/user/settings/), lá você encontrará seu nome de usuário.
+
+*2* - Copie o seu nome de usuário, conforme destacado na imagem acima.
+
+*3 - Digite seu usuário abaixo...*
 """
 
 reminder_on = """*Lembrete configurado* 🎉🥳

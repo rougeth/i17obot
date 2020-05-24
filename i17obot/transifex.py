@@ -8,6 +8,8 @@ import aiohttp
 from async_lru import alru_cache
 from decouple import config
 
+from models import String
+
 TRANSIFEX_TOKEN = config("TRANSIFEX_TOKEN")
 
 TRANSIFEX_API = {
@@ -40,7 +42,7 @@ logger = logging.getLogger()
 
 async def transifex_api(url, project, data=None, retrying=False):
     if retrying:
-        logger.info("retrying url=%s", url)
+        logger.debug("retrying url=%s", url)
 
     auth = aiohttp.BasicAuth(login="api", password=TRANSIFEX_TOKEN)
     async with aiohttp.ClientSession(auth=auth) as session:
@@ -51,7 +53,7 @@ async def transifex_api(url, project, data=None, retrying=False):
             async with http_method(
                 urljoin(TRANSIFEX_API[project], url), **kwargs
             ) as response:
-                logger.info("url=%s, status_code=%s", url, response.status)
+                logger.debug("url=%s, status_code=%s", url, response.status)
                 try:
                     return await response.json()
                 except aiohttp.ContentTypeError:
@@ -96,10 +98,13 @@ async def strings_from_resource(resource, language, project):
         resource,
         len(strings),
     )
-    for string in strings:
-        string["resource"] = resource
 
-    return strings
+    return [
+        String.from_transifex(
+            resource=resource, language=language, project=project, **string
+        )
+        for string in strings
+    ]
 
 
 async def random_string(
@@ -111,13 +116,13 @@ async def random_string(
     strings = await strings_from_resource(resource, language, project)
 
     if translated is not None:
-        strings = filter(lambda s: bool(s["translation"]) == translated, strings)
+        strings = filter(lambda s: bool(s.translation) == translated, strings)
 
     if reviewed is not None:
-        strings = filter(lambda s: s["reviewed"] == reviewed, strings)
+        strings = filter(lambda s: s.reviewed == reviewed, strings)
 
     if max_size is not None:
-        strings = filter(lambda s: len(s["source_string"]) <= max_size, strings)
+        strings = filter(lambda s: len(s.source) <= max_size, strings)
 
     strings = list(strings)
     if not strings:
@@ -129,7 +134,9 @@ async def random_string(
             language, project, resource, translated, reviewed, max_size
         )
 
-    return resource, random.choice(list(strings))
+    string = random.choice(strings)
+
+    return string
 
 
 def transifex_string_url(resource, key, language, project):
@@ -138,10 +145,11 @@ def transifex_string_url(resource, key, language, project):
     )
 
 
-async def translate_string(resource, string_hash, translation):
+async def translate_string(user, string):
     await transifex_api(
-        f"resource/{resource}/translation/pt_BR/string/{string_hash}/",
-        data={"translation": translation},
+        f"resource/{string.resource}/translation/{string.language}/string/{string.hash}/",
+        string.project,
+        data={"translation": string.translation, "user": user.transifex_username},
     )
 
 

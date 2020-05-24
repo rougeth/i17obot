@@ -6,7 +6,8 @@ BASE_DIR = os.path.dirname(__file__)
 
 DATABASE = decouple.config("DATABASE")
 
-ADMINS = decouple.config("ADMINS", cast=decouple.Csv(int))
+ADMINS = decouple.config("ADMINS", default="", cast=decouple.Csv(int))
+BETA_USERS = decouple.config("BETA_USERS", default="", cast=decouple.Csv(int))
 
 DEFAULT_LANGUAGE = "pt_BR"
 DEFAULT_PROJECT = "python"

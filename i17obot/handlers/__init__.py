@@ -6,7 +6,7 @@ from aiogram.utils.markdown import quote_html
 
 import config
 from database import get_all_users, get_user, update_user
-from handlers import settings, tutorial
+from handlers import settings, translate, tutorial
 from telegram import bot
 from templates import render_template
 from transifex import random_string, review_string, transifex_string_url
@@ -20,6 +20,7 @@ __all__ = [
     "translate_at_transifex",
     "tutorial",
     "review_translation",
+    "translate",
 ]
 
 logging.basicConfig(level=logging.INFO)
@@ -42,17 +43,14 @@ async def translate_at_transifex(message: types.Message):
     language = user.get("language_code") or config.DEFAULT_LANGUAGE
     project = user.get("project") or config.DEFAULT_PROJECT
 
-    resource, string = await random_string(
-        language, project, translated=False, max_size=300,
-    )
-    string_url = transifex_string_url(resource, string["key"], language, project)
+    string = await random_string(language, project, translated=False, max_size=300,)
 
     response = await render_template(
         message.from_user.id,
         "translate_at_transifex",
-        source=string["source_string"],
-        transifex_url=string_url,
-        docsurl=docsurl(resource).replace("__", "\_\_"),
+        source=string.source,
+        transifex_url=string.url,
+        docsurl=docsurl(string.resource).replace("__", "\_\_"),
     )
 
     response = quote_html(response)
@@ -76,6 +74,8 @@ async def review_translation(message: types.Message):
         return
 
     user = await get_user(message.from_user.id)
+    if user.id not in config.BETA_USERS:
+        return
     language = user.get("language_code") or config.DEFAULT_LANGUAGE
     project = user.get("project") or config.DEFAULT_PROJECT
 
@@ -96,19 +96,16 @@ async def review_translation(message: types.Message):
         )
     )
 
-    resource, string = await random_string(language, project, translated=True)
-    string["project"] = project
-    string["language"] = language
+    string = await random_string(language, project, translated=True)
 
-    await update_user(message.from_user.id, reviewing_string=string)
+    await update_user(message.from_user.id, reviewing_string=string.asdict())
 
-    string_url = transifex_string_url(resource, string["key"], language, project)
     response = await render_template(
         message.from_user.id,
         "review_translation",
-        source=string["source_string"],
-        translation=string["translation"],
-        transifex_url=string_url,
+        source=string.source,
+        translation=string.translation,
+        transifex_url=string.url,
         docsurl=docsurl(resource).replace("__", "\_\_"),
     )
 
@@ -131,32 +128,29 @@ async def review_translation(message: types.Message):
 
 async def confirm_review(query: types.CallbackQuery):
     user = await get_user(query.from_user.id)
-    string = user["reviewing_string"]
-    string_url = transifex_string_url(
-        string["resource"], string["key"], string["language"], string["project"]
-    )
+    string = user.reviewing_string
 
     if query.data == "review-translation-incorrect":
         response = await render_template(
             query.from_user.id,
             "translation_incorrect",
             name=query.from_user.first_name,
-            string_url=string_url,
+            string_url=string.url,
         )
     elif query.data == "review-translation-correct":
         response = await review_string(
-            string["project"],
-            string["resource"],
-            string["language"],
-            string["translation"],
-            string["string_hash"],
+            string.project,
+            string.resource,
+            string.language,
+            string.translation,
+            string.hash,
         )
 
         response = await render_template(
             query.from_user.id,
             "translation_correct",
             name=query.from_user.first_name,
-            string_url=string_url,
+            string_url=string.url,
         )
     else:
         response = await render_template(

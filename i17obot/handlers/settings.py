@@ -6,6 +6,8 @@ import config
 from database import get_user, toggle_reminder, update_user
 from telegram import bot
 from templates import render_template
+from models import User
+from .translate import translate
 
 
 async def reminder(message: types.Message):
@@ -94,3 +96,42 @@ async def set_project(query: types.CallbackQuery):
         query.message.message_id,
         parse_mode="Markdown",
     )
+
+
+async def transifex_username(query: types.CallbackQuery):
+    user = await User.get(query.from_user.id)
+    user.configure_transifex()
+    await user.update()
+
+    template = await render_template(query.from_user.id, "configuring_username")
+
+    await bot.edit_message_text(
+        template,
+        query.message.chat.id,
+        query.message.message_id,
+        disable_web_page_preview=True,
+        parse_mode="Markdown",
+    )
+
+
+async def set_transifex_username(message: types.Message):
+    user = await User.get(message.from_user.id)
+    username = message.text.strip()
+    user.transifex_username = username
+    user.transifex_configured()
+    await user.update()
+
+    if user.translating_string:
+        await bot.send_message(
+            user.id,
+            f"👍 *Usuário `{username}` configurado com sucesso!*\nContinue com a tradução...",
+            parse_mode="Markdown",
+        )
+        string = user.translating_string
+        await translate(message, string["resource"], string)
+    else:
+        await bot.send_message(
+            user.id,
+            f"👍 *Usuário `{username}` configurado com sucesso!*",
+            parse_mode="Markdown",
+        )
