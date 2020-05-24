@@ -29,12 +29,12 @@ $ cp local.env .env
 
 #### To run the bot
 ```
-$ pipenv run python i17obot/main.py
+$ pipenv run python -m i17obot run
 ```
 
 #### To run the reminder task
 ```
-$ pipenv run python i17obot/reminder.py
+$ pipenv run python -m i17obot reminder
 ```
 
 ## FAQ
