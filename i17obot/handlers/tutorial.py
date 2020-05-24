@@ -3,11 +3,12 @@ import typing
 
 from aiogram import types
 
-import config
-from telegram import bot
-from templates import render_template
+from i17obot import bot, config, dp
+from i17obot.templates import render_template
 
 
+@dp.message_handler(commands=["tutorial"])
+@dp.callback_query_handler(text="tutorial_1")
 async def part_1(message: types.Message):
     if isinstance(message, types.CallbackQuery):
         response = await render_template(message.from_user.id, "tutorial_part_1")
@@ -37,6 +38,7 @@ async def part_1(message: types.Message):
     )
 
 
+@dp.callback_query_handler(text="tutorial_2")
 async def part_2(query: types.CallbackQuery):
     keyboards = (
         ("<< Anterior", "tutorial_1"),
@@ -52,6 +54,7 @@ async def part_2(query: types.CallbackQuery):
     )
 
 
+@dp.callback_query_handler(text="tutorial_3")
 async def part_3(query: types.CallbackQuery):
     keyboards = (("<< Anterior", "tutorial_2"),)
     response = await render_template(query.from_user.id, "tutorial_part_3")

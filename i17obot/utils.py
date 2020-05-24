@@ -1,6 +1,6 @@
 from aiogram import types
 
-from models import User
+from i17obot.models import User
 
 
 def docsurl(resource):

@@ -1,25 +1,24 @@
-import config
 from aiogram import types
-from database import get_user, save_translated_string, update_user
-from telegram import bot
-from templates import render_template
-from utils import docsurl
 from aiogram.utils.exceptions import BotBlocked, TelegramAPIError
 from aiogram.utils.markdown import quote_html
-from utils import make_keyboard
 
-from models import User
-
-from transifex import (
+from i17obot import bot, config, dp
+from i17obot.database import get_user, save_translated_string, update_user
+from i17obot.models import User
+from i17obot.templates import render_template
+from i17obot.transifex import (
     random_string,
     review_string,
     transifex_string_url,
     translate_string,
 )
+from i17obot.utils import check_user_state, docsurl, make_keyboard
 
 
+@dp.message_handler(commands=["translate", "traduzir", "traducir"])
+@dp.callback_query_handler(text="translate")
 async def translate(message: types.Message, string=None):
-    await types.ChatActions.typing()
+    await bot.send_chat_action(message.chat.id, "typing")
     user = await User.get(message.from_user.id)
     if user.state != "idle":
         user.cancel_translation()
@@ -82,6 +81,7 @@ async def translate(message: types.Message, string=None):
         )
 
 
+@dp.callback_query_handler(text="init-translation")
 async def ask_for_translation(query: types.CallbackQuery):
     user = await User.get(query.from_user.id)
 
@@ -122,6 +122,7 @@ async def ask_for_translation(query: types.CallbackQuery):
     )
 
 
+@dp.callback_query_handler(check_user_state("translating"), run_task=True)
 async def review(message: types.Message):
     user = await User.get(message.from_user.id)
     user.confirm_translation()
@@ -150,6 +151,7 @@ async def review(message: types.Message):
     )
 
 
+@dp.callback_query_handler(text="confirm-translation")
 async def confirm_translation(query: types.CallbackQuery):
     user = await User.get(query.from_user.id)
     response = await render_template(
@@ -174,6 +176,10 @@ async def confirm_translation(query: types.CallbackQuery):
     )
 
 
+@dp.callback_query_handler(
+    lambda query: query.data
+    in ["confirm-translation", "translate-again", "cancel-translating"]
+)
 async def confirm(query: types.CallbackQuery):
     user = await User.get(query.from_user.id)
 

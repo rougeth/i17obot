@@ -8,7 +8,7 @@ import aiohttp
 from async_lru import alru_cache
 from decouple import config
 
-from models import String
+from i17obot.models import String
 
 TRANSIFEX_TOKEN = config("TRANSIFEX_TOKEN")
 

@@ -4,6 +4,8 @@ import decouple
 
 BASE_DIR = os.path.dirname(__file__)
 
+TELEGRAM_TOKEN = decouple.config("TELEGRAM_TOKEN")
+
 DATABASE = decouple.config("DATABASE")
 
 ADMINS = decouple.config("ADMINS", default="", cast=decouple.Csv(int))

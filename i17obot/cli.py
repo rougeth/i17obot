@@ -2,10 +2,32 @@ import asyncio
 import json
 import sys
 
-from transifex import download_all_strings
+import click
+
+import i17obot
+from i17obot.reminder import reminder_all_users
+from i17obot.transifex import download_all_strings
 
 
+@click.group()
 def main():
+    pass
+
+
+@main.command()
+def run():
+    click.echo("Running i17obot")
+    i17obot.run()
+
+
+@main.command()
+def reminder():
+    click.echo("Running i17obot")
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(reminder_all_users())
+
+
+def _main():
     file_to_save = sys.argv[1]
     strings = asyncio.run(download_all_strings())
 

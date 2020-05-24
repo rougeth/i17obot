@@ -2,14 +2,16 @@ import typing
 
 from aiogram import types
 
-import config
-from database import get_user, toggle_reminder, update_user
-from telegram import bot
-from templates import render_template
-from models import User
+from i17obot import bot, config, dp
+from i17obot.database import get_user, toggle_reminder, update_user
+from i17obot.models import User
+from i17obot.templates import render_template
+from i17obot.utils import check_user_state
+
 from .translate import translate
 
 
+@dp.message_handler(commands=["reminder", "lembrete", "recordatorio"])
 async def reminder(message: types.Message):
     if not types.ChatType.is_private(message.chat):
         return
@@ -24,6 +26,7 @@ async def reminder(message: types.Message):
     )
 
 
+@dp.message_handler(commands=["language"])
 async def language(message: types.Message):
     await types.ChatActions.typing()
     keyboard_markup = types.InlineKeyboardMarkup()
@@ -39,6 +42,7 @@ async def language(message: types.Message):
     )
 
 
+@dp.callback_query_handler(lambda query: query.data in config.AVAILABLE_LANGUAGES)
 async def set_language(query: types.CallbackQuery):
     await types.ChatActions.typing()
     await update_user(query.from_user.id, language_code=query.data)
@@ -57,6 +61,7 @@ async def set_language(query: types.CallbackQuery):
     )
 
 
+@dp.message_handler(commands=["projects", "project"])
 async def projects(message: types.Message):
     await types.ChatActions.typing()
     user = await get_user(message.from_user.id)
@@ -83,6 +88,7 @@ async def projects(message: types.Message):
     )
 
 
+@dp.callback_query_handler(lambda query: query.data in config.AVAILABLE_PROJECTS)
 async def set_project(query: types.CallbackQuery):
     await types.ChatActions.typing()
     user = await get_user(query.from_user.id)
@@ -98,6 +104,7 @@ async def set_project(query: types.CallbackQuery):
     )
 
 
+@dp.callback_query_handler(text="configure-username")
 async def transifex_username(query: types.CallbackQuery):
     user = await User.get(query.from_user.id)
     user.configure_transifex()
@@ -114,6 +121,7 @@ async def transifex_username(query: types.CallbackQuery):
     )
 
 
+@dp.callback_query_handler(check_user_state("configuring_transifex"), run_task=True)
 async def set_transifex_username(message: types.Message):
     user = await User.get(message.from_user.id)
     username = message.text.strip()

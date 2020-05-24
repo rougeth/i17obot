@@ -1,14 +1,14 @@
 from importlib import import_module
 
-import config
-from database import get_user
+from i17obot import config
+from i17obot.database import get_user
 
 
 def get_template(language, template_name, **kwargs):
     try:
-        mod = import_module(f"templates.{language.lower()}")
+        mod = import_module(f"i17obot.templates.{language.lower()}")
     except ModuleNotFoundError:
-        mod = import_module(f"templates.{config.DEFAULT_LANGUAGE.lower()}")
+        mod = import_module(f"i17obot.templates.{config.DEFAULT_LANGUAGE.lower()}")
 
     if not (template := getattr(mod, template_name)):
         raise Exception(f"Template not found for {language} language")

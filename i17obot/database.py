@@ -2,7 +2,7 @@ from datetime import datetime
 
 import motor.motor_asyncio
 
-import config
+from i17obot import config
 
 client = motor.motor_asyncio.AsyncIOMotorClient(config.DATABASE)
 db = client.i17obot

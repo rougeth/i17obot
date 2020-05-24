@@ -21,6 +21,7 @@ async-lru = "*"
 motor = "*"
 pymongo = {extras = ["srv"],version = "*"}
 sentry-sdk = "*"
+click = "*"
 
 [requires]
 python_version = "3.8"

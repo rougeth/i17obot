@@ -1,8 +1,10 @@
+from dataclasses import asdict, dataclass
 from datetime import datetime
 from urllib.parse import quote
+
 from transitions import Machine
-from dataclasses import asdict, dataclass
-from database import db
+
+from i17obot.database import db
 
 PROJECT_URL = {
     "python": (
