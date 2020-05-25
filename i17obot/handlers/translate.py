@@ -19,7 +19,9 @@ from i17obot.utils import check_user_state, docsurl, make_keyboard
 
 @dp.message_handler(commands=["translate", "traduzir", "traducir"])
 @dp.callback_query_handler(text="translate")
-async def translate(message: typing.Union[types.CallbackQuery, types.Message], string=None):
+async def translate(
+    message: typing.Union[types.CallbackQuery, types.Message], string=None
+):
     user_id = message.from_user.id
     if isinstance(message, types.Message):
         message_id = message.message_id
@@ -48,7 +50,7 @@ async def translate(message: typing.Union[types.CallbackQuery, types.Message], s
     )
     message_2 = quote_html(message_2)
 
-    if user.id in config.BETA_USERS:
+    if user.is_beta:
         keyboard_markup = make_keyboard(
             ("Traduzir no Transifex", string.url),
             ("Traduzir no Telegram", "init-translation"),
@@ -71,16 +73,10 @@ async def translate(message: typing.Union[types.CallbackQuery, types.Message], s
             await bot.send_message(user.id, message_2, **options)
         else:
             await bot.edit_message_text(
-                message_1,
-                chat_id,
-                message_id - 1,
-                parse_mode="markdown",
+                message_1, chat_id, message_id - 1, parse_mode="markdown",
             )
             await bot.edit_message_text(
-                message_2,
-                chat_id,
-                message_id,
-                **options,
+                message_2, chat_id, message_id, **options,
             )
 
     except BotBlocked:

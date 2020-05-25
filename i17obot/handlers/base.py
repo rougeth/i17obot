@@ -4,9 +4,10 @@ from aiogram import types
 
 from i17obot import bot, config, dp
 from i17obot.database import get_all_users
+from i17obot.models import User
 from i17obot.templates import render_template
 from i17obot.transifex import translation_stats
-from i17obot.utils import sum_stats
+from i17obot.utils import message_admins, sum_stats
 
 
 @dp.message_handler(commands=["start", "help", "ajuda", "ayuda"])
@@ -55,4 +56,34 @@ async def links(message: types.Message):
     response = await render_template(message.from_user.id, "links")
     await bot.send_message(
         message.chat.id, response, parse_mode="markdown", disable_web_page_preview=True,
+    )
+
+
+@dp.message_handler(commands=["beta"])
+async def beta(message: types.Message):
+    user = await User.get(message.from_user.id)
+    if user.is_beta:
+        await bot.send_message(
+            message.chat.id,
+            "You're a *beta* user!",
+            parse_mode="markdown",
+        )
+        return
+
+    response = await render_template(user.id, "beta_request", user=user)
+    await message_admins(response)
+    await bot.send_message(
+        message.chat.id, "Beta access requested...", parse_mode="markdown",
+    )
+
+
+@dp.message_handler(lambda message: message.text.startswith("/beta_"))
+async def beta_access(message: types.Message):
+    user_id = int(message.text.replace("/beta_", ""))
+    user = await User.get(user_id)
+    user.is_beta = True
+    await user.update()
+
+    await bot.send_message(
+        user.id, "You're a *beta* user!", parse_mode="markdown",
     )

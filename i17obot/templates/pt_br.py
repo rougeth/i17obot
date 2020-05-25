@@ -201,3 +201,10 @@ status = """
 ‣ Translated: *{es[total_translated]:.2f}%*
 ‣ Reviewed: *{es[total_reviewed]:.2f}%*
 """
+
+beta_request = """
+*[admin] beta request*
+
+User *{user.telegram_data[first_name]}* ({user.id}) requested beta access.
+Click /beta\_{user.id} to approve.
+"""

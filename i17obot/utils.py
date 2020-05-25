@@ -3,6 +3,7 @@ from datetime import datetime
 
 from aiogram import types
 
+from i17obot import bot, config
 from i17obot.models import User
 
 
@@ -72,3 +73,8 @@ def sum_stats(stats):
 def seconds_until_tomorrow(today):
     tomorrow = today + datetime.timedelta(days=1)
     return datetime.combine(tomorrow, datetime.time.min) - today
+
+
+async def message_admins(message):
+    for admin in config.ADMINS:
+        await bot.send_message(admin, message, parse_mode="markdown")

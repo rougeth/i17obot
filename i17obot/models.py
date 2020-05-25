@@ -69,6 +69,7 @@ class User:
     project: str = "python"
     reviewing_string: String = None
     translating_string: String = None
+    is_beta: bool = False
 
     _states = ["idle", "translating", "confirming_translation", "configuring_transifex"]
     _transitions = [

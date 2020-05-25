@@ -194,7 +194,7 @@ async def download_all_strings(language):
 async def translation_stats(language):
     today = datetime.today()
     key = f"stats-{today.strftime('%Y-%m-%d')}"
-    if (stats := await cache.get(key)):
+    if (stats := await cache.get(key)) :
         return stats
 
     print(f"Statistics not cached for {language}")
