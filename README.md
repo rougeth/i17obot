@@ -16,7 +16,12 @@
 $ pipenv install
 ```
 
-If you don't have `pipenv` available, you can install via `pip`.
+If you don't have `pipenv` available, you can install it via `pip`.
+
+#### Database
+
+Make sure you have a MongoDB instance running and setup the `DATABASE` key at `.env` file with its URL access. If you have Docker available, the following command should be enough `docker run -p 27017:27017 -d mongo`.
+
 
 #### Configuration
 
@@ -24,6 +29,12 @@ Create a new `.env` file based on `local.env` and populate it with the listed va
 ```
 $ cp local.env .env
 ```
+
+To run **i17obot**, you will also need:
+
+- Telegram API Token: talk to [@BotFather](https://t.me/BotFather) to create a bot and to retrieve its token.
+- Transifex API Token: Go to your [account settings](https://www.transifex.com/user/settings/api/) at Transifex website,  create a new token in the *API token* section.
+
 
 ## Running
 
