@@ -136,7 +136,7 @@ async def set_transifex_username(message: types.Message):
             parse_mode="Markdown",
         )
         string = user.translating_string
-        await translate(message, string["resource"], string)
+        await translate(message, string)
     else:
         await bot.send_message(
             user.id,

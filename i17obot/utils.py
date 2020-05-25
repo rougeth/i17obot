@@ -1,4 +1,5 @@
 from collections import defaultdict
+from datetime import datetime
 
 from aiogram import types
 
@@ -66,3 +67,8 @@ def sum_stats(stats):
     result["total_reviewed"] = result["reviewed"] / total_entities * 100
 
     return result
+
+
+def seconds_until_tomorrow(today):
+    tomorrow = today + datetime.timedelta(days=1)
+    return datetime.combine(tomorrow, datetime.time.min) - today

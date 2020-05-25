@@ -12,6 +12,7 @@ from async_lru import alru_cache
 
 from i17obot import config
 from i17obot.models import String
+from i17obot.utils import seconds_until_tomorrow
 
 TRANSIFEX_API = {
     "python": "https://www.transifex.com/api/2/project/python-newest/",
@@ -36,6 +37,8 @@ FILTER_RESOURCES_TO_BE_TRANSLATED = {
     "jupyter": None,
 }
 
+WEEK_IN_SECONDS = 604_800
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
@@ -44,10 +47,9 @@ logger.info(config.CACHE_URL)
 cache = Cache.from_url(config.CACHE_URL)
 
 STRINGS_CACHE = defaultdict(dict)
-STATS_CACHE = defaultdict(dict)
 
 
-async def transifex_api(url, project, data=None, retrying=False):
+async def transifex_api(url, project, data=None, retrying=False, ttl=3600):
     url = urljoin(TRANSIFEX_API[project], url)
     if not data and (in_cache := await cache.get(url)):
         return in_cache
@@ -90,7 +92,7 @@ async def review_string(project, resource, language, translation, string_hash):
 
 
 async def random_resource(project):
-    resources = await transifex_api(f"resources/", project)
+    resources = await transifex_api(f"resources/", project, ttl=WEEK_IN_SECONDS)
     resources = [resource["slug"] for resource in resources]
 
     if FILTER_RESOURCES_TO_BE_TRANSLATED[project]:
@@ -173,8 +175,6 @@ async def download_all_strings(language):
     """ Download all strings in Transifex to JSON file
     """
     today = datetime.today().strftime("%Y-%m-%d")
-    if strings := STRINGS_CACHE.get(language, {}).get(today):
-        return strings
 
     resources = await transifex_api(f"resources/", "python")
     resources = [resource["slug"] for resource in resources]
@@ -186,16 +186,15 @@ async def download_all_strings(language):
             *[strings_from_resource(resource, language) for resource in resources]
         )
     strings = list(itertools.chain.from_iterable(strings))
-    STRINGS_CACHE[language][today] = strings
     print("Strings", len(resources))
 
     return strings
 
 
 async def translation_stats(language):
-    today = datetime.today().strftime("%Y-%m-%d")
-    if stats := STATS_CACHE.get(language, {}).get(today):
-        print(f"Statistics cached for {language}")
+    today = datetime.today()
+    key = f"stats-{today.strftime('%Y-%m-%d')}"
+    if (stats := await cache.get(key)):
         return stats
 
     print(f"Statistics not cached for {language}")
@@ -210,5 +209,7 @@ async def translation_stats(language):
             *[stats_from_resource(resource, language) for resource in resources]
         )
 
-    STATS_CACHE[language][today] = stats
+    ttl = seconds_until_tomorrow(today)
+    cache.set(key, stat, ttl=ttl)
+
     return stats
