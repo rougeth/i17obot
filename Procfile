@@ -1,1 +1,1 @@
-worker: python i17obot/main.py
+worker: python -m i17obot run

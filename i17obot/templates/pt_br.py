@@ -187,3 +187,17 @@ Você está traduzindo o projeto {project}
 """
 
 selected_project = "Você vai contribuir com o projeto {project}!"
+
+status = """
+📈 @i17obot *stats*
+
+*Total users*: {total_users}
+
+*Python: Portuguese*
+‣ Translated: *{pt_br[total_translated]:.2f}%*
+‣ Reviewed: *{pt_br[total_reviewed]:.2f}%*
+
+*Python: Spanish*
+‣ Translated: *{es[total_translated]:.2f}%*
+‣ Reviewed: *{es[total_reviewed]:.2f}%*
+"""

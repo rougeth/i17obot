@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from aiogram import types
 
 from i17obot.models import User
@@ -44,3 +46,23 @@ def make_keyboard(*rows):
             keyboard_markup.row(add_keyboard_button(row[0], row[1]))
 
     return keyboard_markup
+
+
+def sum_stats(stats):
+    result = defaultdict(int)
+    keys = [
+        "translated_entities",
+        "untranslated_entities",
+        "translated_words",
+        "untranslated_words",
+        "reviewed",
+    ]
+    for data in stats:
+        for key in keys:
+            result[key] += data[key]
+
+    total_entities = result["translated_entities"] + result["untranslated_entities"]
+    result["total_translated"] = result["translated_entities"] / total_entities * 100
+    result["total_reviewed"] = result["reviewed"] / total_entities * 100
+
+    return result

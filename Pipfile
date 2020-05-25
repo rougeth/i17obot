@@ -22,6 +22,7 @@ motor = "*"
 pymongo = {extras = ["srv"],version = "*"}
 sentry-sdk = "*"
 click = "*"
+aiocache = {extras = ["redis"],version = "*"}
 
 [requires]
 python_version = "3.8"
