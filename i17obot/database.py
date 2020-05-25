@@ -50,5 +50,5 @@ async def get_all_users():
 
 async def save_translated_string(user, string):
     db.strings.insert_one(
-        {"user": user.id, "string": string, "created_at": datetime.utcnow(),}
+        {"user": user.id, "string": string.asdict(), "created_at": datetime.utcnow(),}
     )

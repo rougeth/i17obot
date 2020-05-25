@@ -1,3 +1,5 @@
+import typing
+
 from aiogram import types
 from aiogram.utils.exceptions import BotBlocked, TelegramAPIError
 from aiogram.utils.markdown import quote_html
@@ -17,9 +19,17 @@ from i17obot.utils import check_user_state, docsurl, make_keyboard
 
 @dp.message_handler(commands=["translate", "traduzir", "traducir"])
 @dp.callback_query_handler(text="translate")
-async def translate(message: types.Message, string=None):
-    await bot.send_chat_action(message.chat.id, "typing")
-    user = await User.get(message.from_user.id)
+async def translate(message: typing.Union[types.CallbackQuery, types.Message], string=None):
+    user_id = message.from_user.id
+    if isinstance(message, types.Message):
+        message_id = message.message_id
+        chat_id = message.chat.id
+    else:
+        message_id = message.message.message_id
+        chat_id = message.message.chat.id
+
+    await bot.send_chat_action(chat_id, "typing")
+    user = await User.get(user_id)
     if user.state != "idle":
         user.cancel_translation()
         await user.update()
@@ -62,14 +72,14 @@ async def translate(message: types.Message, string=None):
         else:
             await bot.edit_message_text(
                 message_1,
-                message.message.chat.id,
-                message.message.message_id - 1,
+                chat_id,
+                message_id - 1,
                 parse_mode="markdown",
             )
             await bot.edit_message_text(
                 message_2,
-                message.message.chat.id,
-                message.message.message_id,
+                chat_id,
+                message_id,
                 **options,
             )
 
@@ -122,7 +132,7 @@ async def ask_for_translation(query: types.CallbackQuery):
     )
 
 
-@dp.callback_query_handler(check_user_state("translating"), run_task=True)
+@dp.message_handler(check_user_state("translating"), run_task=True)
 async def review(message: types.Message):
     user = await User.get(message.from_user.id)
     user.confirm_translation()

@@ -121,7 +121,7 @@ async def transifex_username(query: types.CallbackQuery):
     )
 
 
-@dp.callback_query_handler(check_user_state("configuring_transifex"), run_task=True)
+@dp.message_handler(check_user_state("configuring_transifex"), run_task=True)
 async def set_transifex_username(message: types.Message):
     user = await User.get(message.from_user.id)
     username = message.text.strip()
