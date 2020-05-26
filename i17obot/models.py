@@ -65,7 +65,7 @@ class User:
     updated_at: datetime = None
     transifex_username: str = None
     state: str = "idle"
-    language_code: str = "pt_br"
+    language_code: str = "pt_BR"
     project: str = "python"
     reviewing_string: String = None
     translating_string: String = None
