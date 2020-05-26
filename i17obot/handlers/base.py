@@ -1,6 +1,7 @@
 from collections import defaultdict
 
 from aiogram import types
+from aiogram.utils.text_decorations import markdown_decoration
 
 from i17obot import bot, config, dp
 from i17obot.database import get_all_users
@@ -64,9 +65,7 @@ async def beta(message: types.Message):
     user = await User.get(message.from_user.id)
     if user.is_beta:
         await bot.send_message(
-            message.chat.id,
-            "You're a *beta* user!",
-            parse_mode="markdown",
+            message.chat.id, "You're a *beta* user!", parse_mode="markdown",
         )
         return
 

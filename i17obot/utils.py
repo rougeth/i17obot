@@ -2,6 +2,7 @@ from collections import defaultdict
 from datetime import datetime
 
 from aiogram import types
+from aiogram.utils.text_decorations import markdown_decoration
 
 from i17obot import bot, config
 from i17obot.models import User
@@ -78,3 +79,41 @@ def seconds_until_tomorrow(today):
 async def message_admins(message):
     for admin in config.ADMINS:
         await bot.send_message(admin, message, parse_mode="markdown")
+
+
+def unparse_message(message):
+    text = message.text
+    entities = message.entities
+    if (
+        len(entities) == 1
+        and entities[0].type == "code"
+        and entities[0].values["offset"] == 0
+        and entities[0].values["length"] == len(text)
+    ):
+        return message.text
+
+    unparsed_text = markdown_decoration.unparse(text, entities)
+    special_chars = [
+        "_",
+        "*",
+        "[",
+        "]",
+        "(",
+        ")",
+        "~",
+        "`",
+        ">",
+        "#",
+        "+",
+        "-",
+        "=",
+        "|",
+        "{",
+        "}",
+        ".",
+        "!",
+    ]
+    for char in special_chars:
+        unparsed_text = unparsed_text.replace(f"\\{char}", char)
+
+    return unparsed_text

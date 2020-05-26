@@ -14,7 +14,7 @@ from i17obot.transifex import (
     transifex_string_url,
     translate_string,
 )
-from i17obot.utils import check_user_state, docsurl, make_keyboard
+from i17obot.utils import check_user_state, docsurl, make_keyboard, unparse_message
 
 
 @dp.message_handler(commands=["translate", "traduzir", "traducir"])
@@ -130,9 +130,11 @@ async def ask_for_translation(query: types.CallbackQuery):
 
 @dp.message_handler(check_user_state("translating"), run_task=True)
 async def review(message: types.Message):
+    translation = unparse_message(message) if message.entities else message.text
+
     user = await User.get(message.from_user.id)
     user.confirm_translation()
-    user.translating_string.translation = message.text
+    user.translating_string.translation = translation
     await user.update()
 
     keyboard_markup = make_keyboard(
@@ -145,7 +147,7 @@ async def review(message: types.Message):
         user.id,
         "confirm_translation",
         source=user.translating_string.source,
-        translation=message.text,
+        translation=translation,
     )
 
     await bot.send_message(
