@@ -3,10 +3,9 @@ import logging
 from unittest.mock import Mock
 
 import sentry_sdk
-from sentry_sdk.integrations.logging import LoggingIntegration
-
 from aiogram import types
 from aiogram.utils.exceptions import BotBlocked
+from sentry_sdk.integrations.logging import LoggingIntegration
 
 from i17obot import bot, config
 from i17obot.database import get_users_with_reminder_on
@@ -22,13 +21,10 @@ def setup_sentry():
 
     # All of this is already happening by default!
     sentry_logging = LoggingIntegration(
-        level=logging.INFO,        # Capture info and above as breadcrumbs
-        event_level=logging.ERROR  # Send errors as events
+        level=logging.INFO,  # Capture info and above as breadcrumbs
+        event_level=logging.ERROR,  # Send errors as events
     )
-    sentry_sdk.init(
-        dsn=config.SENTRY_DSN,
-        integrations=[sentry_logging]
-    )
+    sentry_sdk.init(dsn=config.SENTRY_DSN, integrations=[sentry_logging])
 
 
 async def reminder(user_id):

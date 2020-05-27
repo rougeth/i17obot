@@ -1,7 +1,7 @@
 name: Tests
 on:
   push:
-    branches: [master]
+    branches: "*"
   pull_request:
     branches: [master]
 
@@ -23,8 +23,10 @@ jobs:
     - name: Run tests
       run: pytest tests.py
       env:
-        TELEGRAM_TOKEN: ""
-        DATABASE: ""
+        TELEGRAM_TOKEN: "000000000:this-is-a-fake-token-from-trelegram"
+        TRANSIFEX_TOKEN: ""
+        DATABASE: "localhost"
+
 
     - name: Run linter
       run: black --check i17obot
