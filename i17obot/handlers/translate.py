@@ -87,7 +87,9 @@ async def translate(
         logger.exception("i17obot blocked by user. userid=%r", user.id)
     except TelegramAPIError:
         logger.exception(
-            "Telegram API Error while sending message. message=%r", response
+            "Telegram API Error while sending message. message_1=%r, message_2=%r",
+            message_1,
+            message_2,
         )
 
 
