@@ -1,3 +1,4 @@
+import logging
 import typing
 
 from aiogram import types
@@ -15,6 +16,9 @@ from i17obot.transifex import (
     translate_string,
 )
 from i17obot.utils import check_user_state, docsurl, make_keyboard, unparse_message
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 
 @dp.message_handler(commands=["translate", "traduzir", "traducir"])
