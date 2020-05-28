@@ -171,7 +171,10 @@ async def confirm_translation(query: types.CallbackQuery):
         "confirm_translation",
         source=user.translating_string.source,
         translation=user.translating_string.translation,
-    ) + ("\n🎉 *Tradução confirmada com sucesso!*")
+    ) + (
+        "\n🎉 *Tradução confirmada com sucesso!*"
+        "\nQue tal /traduzir mais um trecho? 😁"
+    )
 
     await translate_string(user, user.translating_string)
     await save_translated_string(user, user.translating_string)
