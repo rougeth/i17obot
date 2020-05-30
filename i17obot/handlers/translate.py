@@ -63,6 +63,7 @@ async def translate(
     else:
         keyboard_markup = make_keyboard(
             ("Traduzir no Transifex", string.url),
+            ("Traduzir no Telegram", "init-translation"),
             [("⏭ Próximo", "translate"), ("❌ Cancelar", "cancel-translating"),],
         )
 
