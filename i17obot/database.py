@@ -38,7 +38,13 @@ async def toggle_reminder(user_id):
 async def get_users_with_reminder_on():
     return [
         user
-        async for user in db.users.find({"reminder_set": True, "chat_type": "private"})
+        async for user in db.users.find(
+            {
+                "reminder_set": True,
+                "chat_type": "private",
+                "project": {"$in": ["python", None]},
+            }
+        )
     ]
 
 
