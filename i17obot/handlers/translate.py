@@ -24,9 +24,8 @@ logger = logging.getLogger(__name__)
 @dp.message_handler(commands=["translate", "traduzir", "traducir"])
 @dp.callback_query_handler(text="translate")
 async def translate(
-    message: typing.Union[types.CallbackQuery, types.Message], string=None
+    message: typing.Union[types.CallbackQuery, types.Message], user: User, string=None
 ):
-    user_id = message.from_user.id
     if isinstance(message, types.Message):
         message_id = message.message_id
         chat_id = message.chat.id
@@ -35,7 +34,6 @@ async def translate(
         chat_id = message.message.chat.id
 
     await bot.send_chat_action(chat_id, "typing")
-    user = await User.get(user_id)
     if user.state != "idle":
         user.cancel_translation()
         await user.update()
@@ -56,9 +54,9 @@ async def translate(
 
     if user.is_beta:
         keyboard_markup = make_keyboard(
-            ("Traduzir no Transifex", string.url),
             ("Traduzir no Telegram", "init-translation"),
-            [("⏭ Próximo", "translate"), ("❌ Cancelar", "cancel-translating"),],
+            ("Traduzir no Transifex", string.url),
+            ("Escolher outro trecho", "translate"),
         )
     else:
         keyboard_markup = make_keyboard(
@@ -136,10 +134,9 @@ async def ask_for_translation(query: types.CallbackQuery):
 
 
 @dp.message_handler(check_user_state("translating"), run_task=True)
-async def review(message: types.Message):
+async def review(message: types.Message, user: User):
     translation = unparse_message(message) if message.entities else message.text
 
-    user = await User.get(message.from_user.id)
     user.confirm_translation()
     user.translating_string.translation = translation
     await user.update()

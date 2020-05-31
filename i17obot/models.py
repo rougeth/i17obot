@@ -5,6 +5,7 @@ from urllib.parse import quote
 from transitions import Machine
 
 from i17obot.database import db
+from i17obot.database import create_user, get_user, update_user
 
 PROJECT_URL = {
     "python": (
@@ -18,6 +19,10 @@ PROJECT_URL = {
         "?q={query_string}"
     ),
 }
+
+
+class UserNotFound(Exception):
+    ...
 
 
 @dataclass
@@ -61,7 +66,7 @@ class User:
     id: int
     reminder_set: bool
     telegram_data: dict
-    chat_type: str
+    chat_type: str = "private"
     updated_at: datetime = None
     transifex_username: str = None
     state: str = "idle"
@@ -113,13 +118,22 @@ class User:
 
     @classmethod
     async def get(cls, user_id):
-        if not (data := await db.users.find_one({"id": user_id})):
-            raise Exception("User not found")
+        if not (data := await get_user(user_id)):
+            raise UserNotFound(f"User not found. id={user_id}")
 
         del data["_id"]
         return cls(**data)
 
+    @classmethod
+    async def get_or_create(cls, user_data, chat_data):
+        try:
+            return await cls.get(user_data.id)
+        except UserNotFound:
+            data = await create_user(user_data, chat_data)
+            del data["_id"]
+            return cls(**data)
+
     async def update(self):
         data = asdict(self)
         del data["id"]
-        await db.users.update_one({"id": self.id}, {"$set": data})
+        await update_user(self.id, **data)

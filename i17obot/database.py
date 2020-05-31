@@ -8,17 +8,15 @@ client = motor.motor_asyncio.AsyncIOMotorClient(config.DATABASE)
 db = client.i17obot
 
 
-async def create_user(telegram_user, chat_type):
-    user = await db.users.find_one({"id": telegram_user.id})
-    if not user:
-        user = await db.users.insert_one(
-            {
-                "id": telegram_user.id,
-                "reminder_set": True,
-                "telegram_data": dict(telegram_user),
-                "chat_type": chat_type,
-            }
-        )
+async def create_user(user_data, chat_data):
+    user = await db.users.insert_one(
+        {
+            "id": user_data["id"],
+            "reminder_set": True,
+            "telegram_data": dict(user_data),
+            "chat_type": chat_data.type,
+        }
+    )
 
 
 async def update_user(user_id, **kwargs):
