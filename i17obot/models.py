@@ -4,8 +4,7 @@ from urllib.parse import quote
 
 from transitions import Machine
 
-from i17obot.database import db
-from i17obot.database import create_user, get_user, update_user
+from i17obot.database import create_user, db, get_user, update_user
 
 PROJECT_URL = {
     "python": (

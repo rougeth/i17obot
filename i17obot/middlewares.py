@@ -17,7 +17,9 @@ class UserMiddleware(BaseMiddleware):
     async def on_pre_process_message(self, message: types.Message, data: dict, *args):
         await self.setup_user(data, message.from_user, message.chat)
 
-    async def on_pre_process_callback_query(self, query: types.CallbackQuery, data: dict):
+    async def on_pre_process_callback_query(
+        self, query: types.CallbackQuery, data: dict
+    ):
         await self.setup_user(data, query.from_user, query.message.chat)
 
 

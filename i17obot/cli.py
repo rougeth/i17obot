@@ -21,10 +21,11 @@ def run():
 
 
 @main.command()
-def reminder():
+@click.option("-u", "--user", type=int, multiple=True)
+def reminder(user):
     click.echo("Running i17obot")
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(reminder_all_users())
+    loop.run_until_complete(reminder_all_users(users=user))
 
 
 def _main():
