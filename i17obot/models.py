@@ -129,7 +129,6 @@ class User:
             return await cls.get(user_data.id)
         except UserNotFound:
             data = await create_user(user_data, chat_data)
-            del data["_id"]
             return cls(**data)
 
     async def update(self):
