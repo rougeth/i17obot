@@ -1,5 +1,5 @@
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from aiogram import types
 from aiogram.utils.text_decorations import markdown_decoration
@@ -72,7 +72,7 @@ def sum_stats(stats):
 
 
 def seconds_until_tomorrow(today):
-    tomorrow = today + datetime.timedelta(days=1)
+    tomorrow = today + timedelta(days=1)
     return datetime.combine(tomorrow, datetime.time.min) - today
 
 
