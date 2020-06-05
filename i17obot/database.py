@@ -9,7 +9,7 @@ db = client.i17obot
 
 
 async def create_user(user_data, chat_data):
-    user = await db.users.insert_one(
+    return await db.users.insert_one(
         {
             "id": user_data["id"],
             "reminder_set": True,
