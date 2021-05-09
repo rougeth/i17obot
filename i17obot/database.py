@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import motor.motor_asyncio
 
@@ -56,3 +56,19 @@ async def save_translated_string(user, string):
     db.strings.insert_one(
         {"user": user.id, "string": string.asdict(), "created_at": datetime.utcnow(),}
     )
+
+
+async def bot_stats():
+    total_users = await db.users.count_documents({})
+    total_strings = await db.strings.count_documents({})
+
+    past_30_days = datetime.utcnow() - timedelta(days=30)
+    strings_last_month = await db.strings.count_documents(
+        {"created_at": {"$gt": past_30_days}}
+    )
+
+    return {
+        "total_users": total_users,
+        "total_strings": total_strings,
+        "total_strings_past_30_days": strings_last_month,
+    }

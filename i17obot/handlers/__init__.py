@@ -1,1 +1,1 @@
-from . import base, settings, translate, tutorial
+from . import base, settings, stats, translate, tutorial

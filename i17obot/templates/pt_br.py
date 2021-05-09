@@ -208,3 +208,12 @@ beta_request = """
 User *{user.telegram_data[first_name]}* ({user.id}) requested beta access.
 Click /beta\_{user.id} to approve.
 """
+
+bot_stats = """
+*Total*
+Usuários: {users}
+Traduções pelo bot: {strings}
+
+*Últimos 30 dias*
+Traduções pelo bot: {strings_last_month}
+"""

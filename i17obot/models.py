@@ -128,8 +128,8 @@ class User:
         try:
             return await cls.get(user_data.id)
         except UserNotFound:
-            data = await create_user(user_data, chat_data)
-            return cls(**data)
+            await create_user(user_data, chat_data)
+            return await cls.get(user_data.id)
 
     async def update(self):
         data = asdict(self)
