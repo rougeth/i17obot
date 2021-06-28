@@ -15,7 +15,7 @@ from i17obot.models import String
 from i17obot.utils import seconds_until_tomorrow
 
 TRANSIFEX_API = {
-    "python": "https://www.transifex.com/api/2/project/python-39/",
+    "python": "https://www.transifex.com/api/2/project/python-newest/",
     "jupyter": "https://www.transifex.com/api/2/project/jupyter-meta-documentation/",
 }
 
